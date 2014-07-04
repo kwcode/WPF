@@ -57,7 +57,20 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="2">
-                <TabControl x:Name="txTabContainer"></TabControl>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0" MinWidth="100">
+                    <StackPanel Orientation="Vertical">
+                        <Button x:Name="btn_A" Content="A" Click="btn_A_Click"></Button>
+                        <TextBox x:Name="txt_Count" Text="9"></TextBox>
+                        <TextBox x:Name="txt_pageIndex" Text="1"/>
+                    </StackPanel>
+
+                </Grid>
+                <TabControl x:Name="txTabContainer" Grid.Column="2"></TabControl>
             </Grid>
         </Grid>
     </Grid>

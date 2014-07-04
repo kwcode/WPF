@@ -46,6 +46,9 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="TWClientApi">
+      <HintPath>..\..\..\..\lib\common\TWClientApi.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -106,10 +109,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\TWClientApi\TWClientApi.csproj">
-      <Project>{7EC1CF57-DE7C-4E97-B7F3-004574C39AE6}</Project>
-      <Name>TWClientApi</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Module\UserManager\UserManager.csproj">
       <Project>{F356480C-803C-43A0-A7A4-BF3E3847DA6B}</Project>
       <Name>UserManager</Name>

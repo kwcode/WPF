@@ -142,7 +142,42 @@ namespace ClientDebug
             _UC.Save();
             MessageBox.Show("保存状态成功。");
         }
+        private int PageIndex = 1;
+        private int PageSize = 9;
+        private int TotalCount = 0;
+        private void btn_A_Click(object sender, RoutedEventArgs e)
+        {
+            TotalCount = Convert.ToInt32(txt_Count.Text);
+            PageIndex = Convert.ToInt32(txt_pageIndex.Text);
+            string aa = "";
+            if (TotalCount != 0 && PageIndex != 0)
+            {
+                if (TotalCount > PageSize)
+                {
+                    int size = TotalCount / PageSize + 1;
+                    if (size >= PageIndex)
+                    {
+                        aa = "存在1" + size; ;
+                    }
+                    else
+                    {
+                        aa = "不存在0 " + size;
+                    }
+                }
+                else
+                {
+                    if (PageIndex == 1)
+                        aa = "存在1";
+                    else
+                        aa = "不存在0";
+                }
 
+            }
+            else
+                aa = "不存在0";
+            txtParas.Text = aa;
+            // string i = ((PageIndex >= (TotalCount + PageSize - 1) / PageSize) || (TotalCount / PageSize == PageIndex)) ? "1" : "0";
+        }
     }
     internal class HandlerData
     {
