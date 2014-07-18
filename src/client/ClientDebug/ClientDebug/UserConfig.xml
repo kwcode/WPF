@@ -8,5 +8,8 @@
   <!--用户自己配置。-->
   <Dlls>
     <Dll value="UserManager.dll"></Dll>
+    <Dll value="WorkNotes.dll"></Dll>
+    <Dll value="WPFDemo.dll"></Dll>
+    
   </Dlls>
 </Configuration>
