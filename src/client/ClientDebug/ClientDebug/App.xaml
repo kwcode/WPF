@@ -3,6 +3,38 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+
+        <Style TargetType="Grid">
+            <Setter Property="Background" Value="AliceBlue"></Setter>
+        </Style>
+        <Style TargetType="ToolBar">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="#FF8DD8D5" Offset="1"/>
+                        <GradientStop Color="#FFD5D2CA" Offset="0.003"/>
+                        <GradientStop Color="#FF79C7D4" Offset="0.458"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ButtonStyle34" TargetType="Button">
+            <Setter Property="Background" Value="PeachPuff"></Setter>
+            <Style.Triggers>
+                <!--鼠标放上来-->
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="PeachPuff"> 
+                    </Setter>
+                </Trigger>
+                <!--鼠标点击-->
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="Red"></Setter>
+                </Trigger>
+                <!--按钮不可用-->
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="#FF766949"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Application.Resources>
 </Application>
