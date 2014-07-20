@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="WPFDemo.XMLCtrl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <WrapPanel Grid.Row="0">
+            <Button Content="读出XML" Margin="5" Width="80" x:Name="btn_ReadXml" Click="btn_ReadXml_Click"></Button>
+            <Button Content="初始化" Margin="5" Width="80" x:Name="btn_Init" Click="btn_Init_Click"></Button>
+            <Button Content="新增节点" Margin="5" Width="80" x:Name="btn_Add" Click="btn_Add_Click"></Button>
+            <Button Content="修改" Margin="5" Width="80" x:Name="btn_Update" Click="btn_Update_Click"></Button>
+            <Button Content="删除" Margin="5" Width="80" x:Name="btn_Del"></Button>
+            <Button Content="查询" Margin="5" Width="80" x:Name="btn_Sel" Click="btn_Sel_Click"></Button>
+        </WrapPanel>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="144*" />
+                <ColumnDefinition Width="656*" />
+            </Grid.ColumnDefinitions>
+            <TextBox x:Name="txt_msg"  Foreground="Red" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" Grid.ColumnSpan="2"></TextBox>
+        </Grid>
+    </Grid>
+</UserControl>
