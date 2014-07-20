@@ -4,17 +4,28 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
+             xmlns:twControl="clr-namespace:WPF;assembly=WPF.CustomControl"
              d:DesignHeight="800" d:DesignWidth="600">
     <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <ToolBar Margin="2">
                 <Button Content="新增" BorderThickness="0" Width="80" Style="{StaticResource ButtonStyle34}" VerticalAlignment="Top"  ></Button>
             </ToolBar>
+        </Grid>
+        <Grid Grid.Row="1">
+            <twControl:CustSlideDate x:Name="date_Box"></twControl:CustSlideDate>
+        </Grid>
+        <Grid Grid.Row="2">
+            <twControl:CustRichTextBox x:Name="rich_Box"></twControl:CustRichTextBox>
+        </Grid>
+        <Grid Grid.Row="3">
+            <TextBlock x:Name="txt_msg" Foreground="Red"></TextBlock>
         </Grid>
     </Grid>
 </UserControl>

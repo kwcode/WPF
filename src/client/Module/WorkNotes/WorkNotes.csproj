@@ -76,6 +76,14 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\..\svngit\trunk\Common\BaseApiCommon\BaseApiCommon.csproj">
+      <Project>{F00850CC-B3DE-4125-B5D4-9B1C0C3760DE}</Project>
+      <Name>BaseApiCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\svngit\trunk\Common\WPF.CustomControl\WPF.CustomControl.csproj">
+      <Project>{DD226629-8F8C-446F-B7E8-32B938D36372}</Project>
+      <Name>WPF.CustomControl</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Common\TWClientApi\TWClientApi.csproj">
       <Project>{7ec1cf57-de7c-4e97-b7f3-004574c39ae6}</Project>
       <Name>TWClientApi</Name>
@@ -87,6 +95,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
