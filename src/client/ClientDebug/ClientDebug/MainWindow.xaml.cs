@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Reflection;
 using TW;
+using BaseApiCommon;
 
 namespace ClientDebug
 {
@@ -27,19 +28,28 @@ namespace ClientDebug
         {
             InitializeComponent();
             StartUp();
-
+            RegistrationEvent();
             btLoadModule.Click += new RoutedEventHandler(btLoadModule_Click);
             btSaveSetting.Click += new RoutedEventHandler(btSaveSetting_Click);
+        }
+
+        private void RegistrationEvent()
+        {
+            Global.SysContext = System.Threading.SynchronizationContext.Current;
         }
 
 
         private void StartUp()
         {
-
             GetAndRegAssemblyUrlHandlers();
             RegWindowManagerMessageProcessor();
             LoadDebuggingModulesInfo();
+            LoadMenu();
+        }
 
+        private void LoadMenu()
+        {
+            //treeMenu
         }
 
         private void RegWindowManagerMessageProcessor()
