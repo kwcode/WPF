@@ -4,6 +4,476 @@
         <name>BaseApiCommon</name>
     </assembly>
     <members>
+        <member name="M:BaseApiCommon.AssemblyCommon.FindAssembly(System.String,System.String,System.String)">
+            <summary>
+            反射需找是否继承接口
+            </summary>
+            <param name="path">DLL的完整地址</param>
+            <param name="iface">实现的接口名</param>
+            <param name="dllName">DLL名称</param>
+            <returns></returns>
+        </member>
+        <member name="P:BaseApiCommon.Global.SysContext">
+            <summary>
+              UI界面方法使用的主程序的UI主线程同步器
+            </summary>
+        </member>
+        <member name="T:BaseApiCommon.HttpRequestHelper">
+            <summary>
+            提供 Get Post
+            </summary>
+        </member>
+        <member name="M:BaseApiCommon.HttpRequestHelper.HttpGet(System.String,System.Text.Encoding)">
+            <summary>
+            使用Get方法获取字符串结果（没有加入Cookie）
+            </summary>
+            <param name="url"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BaseApiCommon.HttpRequestHelper.HttpGet(System.String,System.Net.CookieContainer,System.Text.Encoding)">
+            <summary>
+            使用Get方法获取字符串结果（加入Cookie）
+            </summary>
+            <param name="url"></param>
+            <param name="cookieContainer"></param>
+            <param name="encoding"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BaseApiCommon.HttpRequestHelper.GetStream(System.String,System.Net.CookieContainer)">
+            <summary>
+            获取字符流
+            </summary>
+            <param name="url"></param>
+            <param name="cookieContainer"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BaseApiCommon.HttpRequestHelper.CreateGetHttpResponse(System.String,System.Nullable{System.Int32},System.String,System.Net.CookieCollection)">
+            <summary>  
+            创建GET方式的HTTP请求  
+            </summary>  
+            <param name="url">请求的URL</param>  
+            <param name="timeout">请求的超时时间</param>  
+            <param name="userAgent">请求的客户端浏览器信息，可以为空</param>  
+            <param name="cookies">随同HTTP请求发送的Cookie信息，如果不需要身份验证可以为空</param>  
+            <returns></returns>  
+        </member>
+        <member name="M:BaseApiCommon.HttpRequestHelper.CreatePostHttpResponse(System.String,System.Collections.Generic.IDictionary{System.String,System.String},System.Nullable{System.Int32},System.String,System.Text.Encoding,System.Net.CookieCollection)">
+            <summary>  
+            创建POST方式的HTTP请求  
+            </summary>  
+            <param name="url">请求的URL</param>  
+            <param name="parameters">随同请求POST的参数名称及参数值字典</param>  
+            <param name="timeout">请求的超时时间</param>  
+            <param name="userAgent">请求的客户端浏览器信息，可以为空</param>  
+            <param name="requestEncoding">发送HTTP请求时所用的编码</param>  
+            <param name="cookies">随同HTTP请求发送的Cookie信息，如果不需要身份验证可以为空</param>  
+            <returns></returns>  
+        </member>
+        <member name="T:BaseApiCommon.ImageConvertCommon">
+            <summary>
+            提供图片的转换
+            【注意图片的路径】
+            </summary>
+        </member>
+        <member name="M:BaseApiCommon.ImageConvertCommon.GetImage1(System.String)">
+            <summary>
+            获取图片
+            </summary>
+            <param name="path">文件的路径</param> 
+        </member>
+        <member name="M:BaseApiCommon.ImageConvertCommon.GetImage2(System.String)">
+            <summary>
+            获取图片
+            </summary> 
+        </member>
+        <member name="M:BaseApiCommon.ImageConvertCommon.GetImage64(System.String)">
+            <summary>
+            获取Base64图片
+            </summary> 
+        </member>
+        <member name="M:BaseApiCommon.ImageConvertCommon.ConvertByteToBitmapImage(System.Byte[])">
+            <summary>
+            图片流转换成WPF专有的格式
+            </summary>
+            <param name="buff">图片流</param>
+            <returns></returns>
+        </member>
+        <member name="M:BaseApiCommon.ImageConvertCommon.ConvertBitmapImageToByte(System.Windows.Media.Imaging.BitmapImage)">
+            <summary>
+            图片转换流
+            </summary>
+            <param name="bmp"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BaseApiCommon.ImageConvertCommon.ConvertBase64ToBitmapImage(System.String)">
+            <summary>
+            转换
+            </summary> 
+        </member>
+        <member name="M:BaseApiCommon.ImageConvertCommon.ConvertBase64ToByte(System.String)">
+            <summary>
+            转换
+            </summary> 
+        </member>
+        <member name="M:BaseApiCommon.ImageConvertCommon.UploadImg(System.String,System.String)">
+            <summary>
+            下载图片
+            </summary>
+            <param name="imgUrl"></param>
+            <param name="path"></param>
+        </member>
+        <member name="E:BaseApiCommon.ImageConvertCommon.DownloadChangedEvent">
+            <summary>
+            在异步下载操作成功转换部分或全部数据后发生。
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="E:BaseApiCommon.ImageConvertCommon.DownloadCompletedEvent">
+            <summary>
+            在异步文件下载操作完成时发生。
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:BaseApiCommon.InvokeParam">
+            <summary>
+            Class InvokeParam
+            </summary>
+        </member>
+        <member name="F:BaseApiCommon.InvokeParam.Interface">
+            <summary>
+            The interface
+            </summary>
+        </member>
+        <member name="F:BaseApiCommon.InvokeParam.MethodName">
+            <summary>
+            The method name
+            </summary>
+        </member>
+        <member name="F:BaseApiCommon.InvokeParam.Parameters">
+            <summary>
+            The parameters
+            </summary>
+        </member>
+        <member name="T:BaseApiCommon.Mail.EMail">
+            <summary>
+            邮件管理相关属性
+            </summary>
+        </member>
+        <member name="P:BaseApiCommon.Mail.EMail.ID">
+            <summary>
+            唯一标识号
+            </summary>
+        </member>
+        <member name="P:BaseApiCommon.Mail.EMail.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:BaseApiCommon.Mail.EMail.LoginName">
+            <summary>
+            登录帐号
+            </summary>
+        </member>
+        <member name="P:BaseApiCommon.Mail.EMail.Password">
+            <summary>
+            登录密码
+            </summary>
+        </member>
+        <member name="P:BaseApiCommon.Mail.EMail.FromAddress">
+            <summary>
+            发送人（通常是登录帐号邮箱）
+            </summary>
+        </member>
+        <member name="P:BaseApiCommon.Mail.EMail.ToAddress">
+            <summary>
+            接收者地址
+            </summary>
+        </member>
+        <member name="P:BaseApiCommon.Mail.EMail.Body">
+            <summary>
+            发送邮件内容
+            </summary>
+        </member>
+        <member name="P:BaseApiCommon.Mail.EMail.Subject">
+            <summary>
+            邮件主题
+            </summary>
+        </member>
+        <member name="P:BaseApiCommon.Mail.EMail.SmtpServerAddress">
+            <summary>
+            Smtp服务
+            </summary>
+        </member>
+        <member name="P:BaseApiCommon.Mail.EMail.SmtpPort">
+            <summary>
+            Smtp端口
+            </summary>
+        </member>
+        <member name="P:BaseApiCommon.Mail.EMail.PopServerAddress">
+            <summary>
+            Pop3服务地址
+            </summary>
+        </member>
+        <member name="M:BulkMail.MailCommon.InitializeTCPClient(System.String)">
+            <summary>
+            初始化TCP网络服务连接
+            </summary>
+            <param name="user">登录用户名（登录邮箱）</param>
+            <returns></returns>
+        </member>
+        <member name="M:BulkMail.MailCommon.InitializeTCPClient(System.String,System.Int32)">
+            <summary>
+            初始化TCP网络服务连接
+            </summary>
+            <param name="hostname">要连接到的远程主机的 DNS 名</param>
+            <param name="port"> 要连接到的远程主机的端口号。</param>
+        </member>
+        <member name="M:BulkMail.MailCommon.CheckEmailUser(System.String,System.String,System.Net.Sockets.TcpClient)">
+            <summary>
+            验证PoP邮箱 登录名密码是否正确
+            </summary>
+            <param name="user">登录邮箱</param>
+            <param name="pwd">密码</param>
+            <param name="TCPClient">TCP 网络服务提供客户端连接</param>
+            <returns></returns>
+        </member>
+        <member name="M:BulkMail.MailCommon.InitializeSMTPClient(System.String,System.Int32)">
+            <summary>
+            初始化SMTP网络服务连接
+            </summary> 
+            <param name="host">SMTP 事务的主机的名称或 IP 地址</param>
+            <param name="port">端口号</param>
+            <returns></returns>
+        </member>
+        <member name="M:BulkMail.MailCommon.InitializeSMTPClient(System.String)">
+            <summary>
+            初始化SMTP网络服务连接
+            </summary>
+            <param name="user">登录用户名（登录邮箱）</param>
+            <returns></returns>
+        </member>
+        <member name="M:BulkMail.MailCommon.SendMail(System.Net.Mail.MailMessage,System.Net.Mail.SmtpClient)">
+            <summary>
+            SMTP协议发送邮件
+            </summary>
+            <param name="mm">发送的电子邮件</param>
+            <param name="SMTPClient">SMTP协议</param>
+            <returns></returns>
+        </member>
+        <member name="M:BulkMail.MailCommon.SendMail(BaseApiCommon.Mail.EMail,System.Net.Mail.SmtpClient)">
+            <summary>
+            SMTP协议发送邮件
+            </summary>
+            <param name="eMail">邮件信息</param>
+            <param name="SMTPClient">SMTP协议</param>
+            <returns></returns>
+        </member>
+        <member name="M:BulkMail.MailCommon.GetTimeSpan(System.DateTime,System.DateTime)">
+            <summary>
+            获取时间跨度 秒
+            </summary>
+            <param name="startTime"></param>
+            <param name="endTime"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BulkMail.MailCommon.GetMailServer">
+            <summary>
+            获取 邮箱服务器的信息 STMP 和POP3
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:BulkMail.MailCommon.GetAccordServer(System.String)">
+            <summary>
+            根据邮箱地址获取 对应的服务器地址
+            </summary>
+            <param name="mailAddress"></param>
+            <returns></returns>
+        </member>
+        <member name="T:BulkMail.MailSendMessage">
+            <summary>
+            发送邮件过程中产生的信息
+            </summary>
+        </member>
+        <member name="P:BulkMail.MailSendMessage.SuccessNumber">
+            <summary>
+            成功数量
+            </summary>
+        </member>
+        <member name="P:BulkMail.MailSendMessage.SuccessAdress">
+            <summary>
+            成功地址
+            </summary>
+        </member>
+        <member name="P:BulkMail.MailSendMessage.FailNumber">
+            <summary>
+            失败数量
+            </summary>
+        </member>
+        <member name="P:BulkMail.MailSendMessage.FailAdress">
+            <summary>
+            失败地址
+            </summary>
+        </member>
+        <member name="P:BulkMail.MailSendMessage.MailTimeSpan">
+            <summary>
+            邮件发送时间间隔
+            </summary>
+        </member>
+        <!-- 对于成员“P:BulkMail.MailSendMessage.ExMessageinfo”忽略有格式错误的 XML 注释 -->
+        <member name="T:BaseApiCommon.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:BaseApiCommon.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:BaseApiCommon.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="M:BaseApiCommon.RuntimeBuildCommon.CreateTypeBuilder(System.String,System.String,System.String,System.Type)">
+            <summary> 
+            在运行时定义并创建类的新实例。
+            这里是：【可以执行但无法保存该动态程序集。】
+            </summary>
+            <param name="assemblyName"> 程序集的显示名称动态程序集的唯一标识 </param>
+            <param name="moduleName">该动态模块的名称。长度必须小于 260 个字符。 </param>
+            <param name="typName">  类型的完整路径。name 不能包含嵌入的 null 值</param>
+            <param name="interfaceTyp"> 此类型实现的接口Type typeFromHandle = typeof(TInterface);</param>
+            <returns></returns>
+        </member>
+        <member name="M:BaseApiCommon.RuntimeBuildCommon.GetInterfaceMethodInfos(System.Type)">
+            <summary>
+            获取接口方法的返回值、参数等信息。
+            </summary>
+            <param name="interfaceType">接口 Type typeFromHandle = typeof(TInterface);</param>
+            <returns></returns>
+        </member>
+        <member name="M:BaseApiCommon.RuntimeBuildCommon.CreateInterfaceMethod``1(System.Reflection.Emit.TypeBuilder,System.Reflection.MethodInfo,System.String,System.String)">
+            <summary>
+            动态创建接口方法
+            </summary>
+            <param name="typBulder">在运行时定义并创建类的新实例</param>
+            <param name="minfo">方法</param>
+            <param name="interfaceName">接口名【FullName】</param> 
+            <typeparam name="T">含有Invoke的类</typeparam>
+            <param name="Invoke">调用的对应方法</param>
+        </member>
+        <member name="T:BaseApiCommon.SerializationCommon">
+            <summary>
+            序列化
+             [Serializable]//表示一个类可以被序列化。这个类不能被继承。
+             [XmlIgnore]//忽略 XML序列号
+              [NonSerialized]//表示一个序列化的类的一个字段不应序列。  
+            </summary>
+        </member>
+        <member name="M:BaseApiCommon.SerializationCommon.Serilize(System.Object)">
+            <summary>
+            序列化对象  对象必须允许序列化[Serializable]
+            </summary> 
+        </member>
+        <member name="M:BaseApiCommon.SerializationCommon.Deserilize(System.Byte[])">
+            <summary>
+            反序列化
+            </summary> 
+        </member>
+        <member name="M:BaseApiCommon.SerializationCommon.SerializeXML(System.Object)">
+            <summary>
+            序列化对象（生成可视化的XML文件）  必须标记 [Serializable]
+            </summary>
+            <param name="o">反序列化对象</param>
+            <param name="path">存放地址</param>
+        </member>
+        <member name="M:BaseApiCommon.SerializationCommon.DeserializeXML``1(System.Byte[])">
+            <summary>
+            视化的XML文件反序列化
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BaseApiCommon.SerializationCommon.SerializeSoap(System.Object)">
+            <summary>
+            序列化Soap对象  对象必须允许序列化[Serializable]
+            </summary> 
+        </member>
+        <member name="M:BaseApiCommon.SerializationCommon.DeSerializeSoap``1(System.Byte[])">
+            <summary>
+            反序列化Soap
+            </summary> 
+        </member>
+        <member name="F:BaseApiCommon.ServiceProxy._Instances">
+            <summary>
+            缓存实例 采用单利模式
+            </summary>
+        </member>
+        <member name="M:BaseApiCommon.ServiceProxy.CreateInterface``1">
+            <summary>
+            构造传入的服务接口
+            </summary>
+            <typeparam name="TInterface">需要创建的接口类型</typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:BaseApiCommon.ServiceProxy.CreateInterfaceImplementation``1">
+            <summary>
+            创建接口实例。
+            </summary>
+            <typeparam name="TInterface"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:BaseApiCommon.ServiceProxy.CreateInterfaceMethod(System.Reflection.Emit.TypeBuilder,System.Reflection.MethodInfo,System.String)">
+            <summary>
+            动态创建接口方法。
+            </summary>
+            <param name="typBulder"></param>
+            <param name="minfo"></param>
+            <param name="interfaceName"></param>
+        </member>
+        <member name="M:BaseApiCommon.ServiceProxy.GetInterfaceMethodInfos(System.Type)">
+            <summary>
+            获取接口方法的返回值、参数等信息。
+            </summary>
+            <param name="interfaceType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BaseApiCommon.ServiceProxy.CreateTypeBuilder(System.String,System.String,System.String,System.Type)">
+            <summary>
+            创建类型Builder。
+            在运行时定义并创建类的新实例。
+            </summary>
+            <param name="assemblyName"></param>
+            <param name="moduleName"></param>
+            <param name="typName"></param>
+            <param name="interfaceTyp"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BaseApiCommon.ServiceProxy.Invoke(System.String,System.String,System.Object[])">
+            <summary>
+            调用服务端指定接口的方法. 内部使用, 使用者不要直接使用
+            </summary>
+            <param name="intfname"></param>
+            <param name="methodname"></param>
+            <param name="param"></param>
+            <returns></returns>
+        </member>
+        <member name="P:BaseApiCommon.ServiceProxy.URL">
+            <summary>
+            服务器地址
+            </summary>
+        </member>
+        <member name="M:BaseApiCommon.WebClientCommon.GetFromServer(System.String,System.Byte[])">
+            <summary>
+            以post的方式向服务器发送请求, 并获取服务器返回的数据
+            </summary>
+            <param name="url"></param>
+            <param name="dataposttoserver"></param>
+            <returns></returns>
+        </member>
         <member name="M:BaseApiCommon.XmlCommon.Init">
             <summary>
             初始化
@@ -119,476 +589,6 @@
         <member name="P:BaseApiCommon.XMLNodeItem.Attributes">
             <summary>
             属性集合
-            </summary>
-        </member>
-        <member name="M:BulkMail.MailCommon.InitializeTCPClient(System.String)">
-            <summary>
-            初始化TCP网络服务连接
-            </summary>
-            <param name="user">登录用户名（登录邮箱）</param>
-            <returns></returns>
-        </member>
-        <member name="M:BulkMail.MailCommon.InitializeTCPClient(System.String,System.Int32)">
-            <summary>
-            初始化TCP网络服务连接
-            </summary>
-            <param name="hostname">要连接到的远程主机的 DNS 名</param>
-            <param name="port"> 要连接到的远程主机的端口号。</param>
-        </member>
-        <member name="M:BulkMail.MailCommon.CheckEmailUser(System.String,System.String,System.Net.Sockets.TcpClient)">
-            <summary>
-            验证PoP邮箱 登录名密码是否正确
-            </summary>
-            <param name="user">登录邮箱</param>
-            <param name="pwd">密码</param>
-            <param name="TCPClient">TCP 网络服务提供客户端连接</param>
-            <returns></returns>
-        </member>
-        <member name="M:BulkMail.MailCommon.InitializeSMTPClient(System.String,System.Int32)">
-            <summary>
-            初始化SMTP网络服务连接
-            </summary> 
-            <param name="host">SMTP 事务的主机的名称或 IP 地址</param>
-            <param name="port">端口号</param>
-            <returns></returns>
-        </member>
-        <member name="M:BulkMail.MailCommon.InitializeSMTPClient(System.String)">
-            <summary>
-            初始化SMTP网络服务连接
-            </summary>
-            <param name="user">登录用户名（登录邮箱）</param>
-            <returns></returns>
-        </member>
-        <member name="M:BulkMail.MailCommon.SendMail(System.Net.Mail.MailMessage,System.Net.Mail.SmtpClient)">
-            <summary>
-            SMTP协议发送邮件
-            </summary>
-            <param name="mm">发送的电子邮件</param>
-            <param name="SMTPClient">SMTP协议</param>
-            <returns></returns>
-        </member>
-        <member name="M:BulkMail.MailCommon.SendMail(BaseApiCommon.Mail.EMail,System.Net.Mail.SmtpClient)">
-            <summary>
-            SMTP协议发送邮件
-            </summary>
-            <param name="eMail">邮件信息</param>
-            <param name="SMTPClient">SMTP协议</param>
-            <returns></returns>
-        </member>
-        <member name="M:BulkMail.MailCommon.GetTimeSpan(System.DateTime,System.DateTime)">
-            <summary>
-            获取时间跨度 秒
-            </summary>
-            <param name="startTime"></param>
-            <param name="endTime"></param>
-            <returns></returns>
-        </member>
-        <member name="M:BulkMail.MailCommon.GetMailServer">
-            <summary>
-            获取 邮箱服务器的信息 STMP 和POP3
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:BulkMail.MailCommon.GetAccordServer(System.String)">
-            <summary>
-            根据邮箱地址获取 对应的服务器地址
-            </summary>
-            <param name="mailAddress"></param>
-            <returns></returns>
-        </member>
-        <member name="T:BulkMail.MailSendMessage">
-            <summary>
-            发送邮件过程中产生的信息
-            </summary>
-        </member>
-        <member name="P:BulkMail.MailSendMessage.SuccessNumber">
-            <summary>
-            成功数量
-            </summary>
-        </member>
-        <member name="P:BulkMail.MailSendMessage.SuccessAdress">
-            <summary>
-            成功地址
-            </summary>
-        </member>
-        <member name="P:BulkMail.MailSendMessage.FailNumber">
-            <summary>
-            失败数量
-            </summary>
-        </member>
-        <member name="P:BulkMail.MailSendMessage.FailAdress">
-            <summary>
-            失败地址
-            </summary>
-        </member>
-        <member name="P:BulkMail.MailSendMessage.MailTimeSpan">
-            <summary>
-            邮件发送时间间隔
-            </summary>
-        </member>
-        <!-- 对于成员“P:BulkMail.MailSendMessage.ExMessageinfo”忽略有格式错误的 XML 注释 -->
-        <member name="T:BaseApiCommon.HttpRequestHelper">
-            <summary>
-            提供 Get Post
-            </summary>
-        </member>
-        <member name="M:BaseApiCommon.HttpRequestHelper.HttpGet(System.String,System.Text.Encoding)">
-            <summary>
-            使用Get方法获取字符串结果（没有加入Cookie）
-            </summary>
-            <param name="url"></param>
-            <returns></returns>
-        </member>
-        <member name="M:BaseApiCommon.HttpRequestHelper.HttpGet(System.String,System.Net.CookieContainer,System.Text.Encoding)">
-            <summary>
-            使用Get方法获取字符串结果（加入Cookie）
-            </summary>
-            <param name="url"></param>
-            <param name="cookieContainer"></param>
-            <param name="encoding"></param>
-            <returns></returns>
-        </member>
-        <member name="M:BaseApiCommon.HttpRequestHelper.GetStream(System.String,System.Net.CookieContainer)">
-            <summary>
-            获取字符流
-            </summary>
-            <param name="url"></param>
-            <param name="cookieContainer"></param>
-            <returns></returns>
-        </member>
-        <member name="M:BaseApiCommon.HttpRequestHelper.CreateGetHttpResponse(System.String,System.Nullable{System.Int32},System.String,System.Net.CookieCollection)">
-            <summary>  
-            创建GET方式的HTTP请求  
-            </summary>  
-            <param name="url">请求的URL</param>  
-            <param name="timeout">请求的超时时间</param>  
-            <param name="userAgent">请求的客户端浏览器信息，可以为空</param>  
-            <param name="cookies">随同HTTP请求发送的Cookie信息，如果不需要身份验证可以为空</param>  
-            <returns></returns>  
-        </member>
-        <member name="M:BaseApiCommon.HttpRequestHelper.CreatePostHttpResponse(System.String,System.Collections.Generic.IDictionary{System.String,System.String},System.Nullable{System.Int32},System.String,System.Text.Encoding,System.Net.CookieCollection)">
-            <summary>  
-            创建POST方式的HTTP请求  
-            </summary>  
-            <param name="url">请求的URL</param>  
-            <param name="parameters">随同请求POST的参数名称及参数值字典</param>  
-            <param name="timeout">请求的超时时间</param>  
-            <param name="userAgent">请求的客户端浏览器信息，可以为空</param>  
-            <param name="requestEncoding">发送HTTP请求时所用的编码</param>  
-            <param name="cookies">随同HTTP请求发送的Cookie信息，如果不需要身份验证可以为空</param>  
-            <returns></returns>  
-        </member>
-        <member name="T:BaseApiCommon.SerializationCommon">
-            <summary>
-            序列化
-             [Serializable]//表示一个类可以被序列化。这个类不能被继承。
-             [XmlIgnore]//忽略 XML序列号
-              [NonSerialized]//表示一个序列化的类的一个字段不应序列。  
-            </summary>
-        </member>
-        <member name="M:BaseApiCommon.SerializationCommon.Serilize(System.Object)">
-            <summary>
-            序列化对象  对象必须允许序列化[Serializable]
-            </summary> 
-        </member>
-        <member name="M:BaseApiCommon.SerializationCommon.Deserilize(System.Byte[])">
-            <summary>
-            反序列化
-            </summary> 
-        </member>
-        <member name="M:BaseApiCommon.SerializationCommon.SerializeXML(System.Object)">
-            <summary>
-            序列化对象（生成可视化的XML文件）  必须标记 [Serializable]
-            </summary>
-            <param name="o">反序列化对象</param>
-            <param name="path">存放地址</param>
-        </member>
-        <member name="M:BaseApiCommon.SerializationCommon.DeserializeXML``1(System.Byte[])">
-            <summary>
-            视化的XML文件反序列化
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="path"></param>
-            <returns></returns>
-        </member>
-        <member name="M:BaseApiCommon.SerializationCommon.SerializeSoap(System.Object)">
-            <summary>
-            序列化Soap对象  对象必须允许序列化[Serializable]
-            </summary> 
-        </member>
-        <member name="M:BaseApiCommon.SerializationCommon.DeSerializeSoap``1(System.Byte[])">
-            <summary>
-            反序列化Soap
-            </summary> 
-        </member>
-        <member name="T:BaseApiCommon.ImageConvertCommon">
-            <summary>
-            提供图片的转换
-            【注意图片的路径】
-            </summary>
-        </member>
-        <member name="M:BaseApiCommon.ImageConvertCommon.GetImage1(System.String)">
-            <summary>
-            获取图片
-            </summary>
-            <param name="path">文件的路径</param> 
-        </member>
-        <member name="M:BaseApiCommon.ImageConvertCommon.GetImage2(System.String)">
-            <summary>
-            获取图片
-            </summary> 
-        </member>
-        <member name="M:BaseApiCommon.ImageConvertCommon.GetImage64(System.String)">
-            <summary>
-            获取Base64图片
-            </summary> 
-        </member>
-        <member name="M:BaseApiCommon.ImageConvertCommon.ConvertByteToBitmapImage(System.Byte[])">
-            <summary>
-            图片流转换成WPF专有的格式
-            </summary>
-            <param name="buff">图片流</param>
-            <returns></returns>
-        </member>
-        <member name="M:BaseApiCommon.ImageConvertCommon.ConvertBitmapImageToByte(System.Windows.Media.Imaging.BitmapImage)">
-            <summary>
-            图片转换流
-            </summary>
-            <param name="bmp"></param>
-            <returns></returns>
-        </member>
-        <member name="M:BaseApiCommon.ImageConvertCommon.ConvertBase64ToBitmapImage(System.String)">
-            <summary>
-            转换
-            </summary> 
-        </member>
-        <member name="M:BaseApiCommon.ImageConvertCommon.ConvertBase64ToByte(System.String)">
-            <summary>
-            转换
-            </summary> 
-        </member>
-        <member name="M:BaseApiCommon.ImageConvertCommon.UploadImg(System.String,System.String)">
-            <summary>
-            下载图片
-            </summary>
-            <param name="imgUrl"></param>
-            <param name="path"></param>
-        </member>
-        <member name="E:BaseApiCommon.ImageConvertCommon.DownloadChangedEvent">
-            <summary>
-            在异步下载操作成功转换部分或全部数据后发生。
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="E:BaseApiCommon.ImageConvertCommon.DownloadCompletedEvent">
-            <summary>
-            在异步文件下载操作完成时发生。
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="P:BaseApiCommon.Global.SysContext">
-            <summary>
-              UI界面方法使用的主程序的UI主线程同步器
-            </summary>
-        </member>
-        <member name="M:BaseApiCommon.RuntimeBuildCommon.CreateTypeBuilder(System.String,System.String,System.String,System.Type)">
-            <summary> 
-            在运行时定义并创建类的新实例。
-            这里是：【可以执行但无法保存该动态程序集。】
-            </summary>
-            <param name="assemblyName"> 程序集的显示名称动态程序集的唯一标识 </param>
-            <param name="moduleName">该动态模块的名称。长度必须小于 260 个字符。 </param>
-            <param name="typName">  类型的完整路径。name 不能包含嵌入的 null 值</param>
-            <param name="interfaceTyp"> 此类型实现的接口Type typeFromHandle = typeof(TInterface);</param>
-            <returns></returns>
-        </member>
-        <member name="M:BaseApiCommon.RuntimeBuildCommon.GetInterfaceMethodInfos(System.Type)">
-            <summary>
-            获取接口方法的返回值、参数等信息。
-            </summary>
-            <param name="interfaceType">接口 Type typeFromHandle = typeof(TInterface);</param>
-            <returns></returns>
-        </member>
-        <member name="M:BaseApiCommon.RuntimeBuildCommon.CreateInterfaceMethod``1(System.Reflection.Emit.TypeBuilder,System.Reflection.MethodInfo,System.String,System.String)">
-            <summary>
-            动态创建接口方法
-            </summary>
-            <param name="typBulder">在运行时定义并创建类的新实例</param>
-            <param name="minfo">方法</param>
-            <param name="interfaceName">接口名【FullName】</param> 
-            <typeparam name="T">含有Invoke的类</typeparam>
-            <param name="Invoke">调用的对应方法</param>
-        </member>
-        <member name="T:BaseApiCommon.Properties.Resources">
-            <summary>
-              A strongly-typed resource class, for looking up localized strings, etc.
-            </summary>
-        </member>
-        <member name="P:BaseApiCommon.Properties.Resources.ResourceManager">
-            <summary>
-              Returns the cached ResourceManager instance used by this class.
-            </summary>
-        </member>
-        <member name="P:BaseApiCommon.Properties.Resources.Culture">
-            <summary>
-              Overrides the current thread's CurrentUICulture property for all
-              resource lookups using this strongly typed resource class.
-            </summary>
-        </member>
-        <member name="M:BaseApiCommon.AssemblyCommon.FindAssembly(System.String,System.String,System.String)">
-            <summary>
-            反射需找是否继承接口
-            </summary>
-            <param name="path">DLL的完整地址</param>
-            <param name="iface">实现的接口名</param>
-            <param name="dllName">DLL名称</param>
-            <returns></returns>
-        </member>
-        <member name="F:BaseApiCommon.ServiceProxy._Instances">
-            <summary>
-            缓存实例 采用单利模式
-            </summary>
-        </member>
-        <member name="M:BaseApiCommon.ServiceProxy.CreateInterface``1">
-            <summary>
-            构造传入的服务接口
-            </summary>
-            <typeparam name="TInterface">需要创建的接口类型</typeparam>
-            <returns></returns>
-        </member>
-        <member name="M:BaseApiCommon.ServiceProxy.CreateInterfaceImplementation``1">
-            <summary>
-            创建接口实例。
-            </summary>
-            <typeparam name="TInterface"></typeparam>
-            <returns></returns>
-        </member>
-        <member name="M:BaseApiCommon.ServiceProxy.CreateInterfaceMethod(System.Reflection.Emit.TypeBuilder,System.Reflection.MethodInfo,System.String)">
-            <summary>
-            动态创建接口方法。
-            </summary>
-            <param name="typBulder"></param>
-            <param name="minfo"></param>
-            <param name="interfaceName"></param>
-        </member>
-        <member name="M:BaseApiCommon.ServiceProxy.GetInterfaceMethodInfos(System.Type)">
-            <summary>
-            获取接口方法的返回值、参数等信息。
-            </summary>
-            <param name="interfaceType"></param>
-            <returns></returns>
-        </member>
-        <member name="M:BaseApiCommon.ServiceProxy.CreateTypeBuilder(System.String,System.String,System.String,System.Type)">
-            <summary>
-            创建类型Builder。
-            在运行时定义并创建类的新实例。
-            </summary>
-            <param name="assemblyName"></param>
-            <param name="moduleName"></param>
-            <param name="typName"></param>
-            <param name="interfaceTyp"></param>
-            <returns></returns>
-        </member>
-        <member name="M:BaseApiCommon.ServiceProxy.Invoke(System.String,System.String,System.Object[])">
-            <summary>
-            调用服务端指定接口的方法. 内部使用, 使用者不要直接使用
-            </summary>
-            <param name="intfname"></param>
-            <param name="methodname"></param>
-            <param name="param"></param>
-            <returns></returns>
-        </member>
-        <member name="P:BaseApiCommon.ServiceProxy.URL">
-            <summary>
-            服务器地址
-            </summary>
-        </member>
-        <member name="M:BaseApiCommon.WebClientCommon.GetFromServer(System.String,System.Byte[])">
-            <summary>
-            以post的方式向服务器发送请求, 并获取服务器返回的数据
-            </summary>
-            <param name="url"></param>
-            <param name="dataposttoserver"></param>
-            <returns></returns>
-        </member>
-        <member name="T:BaseApiCommon.Mail.EMail">
-            <summary>
-            邮件管理相关属性
-            </summary>
-        </member>
-        <member name="P:BaseApiCommon.Mail.EMail.ID">
-            <summary>
-            唯一标识号
-            </summary>
-        </member>
-        <member name="P:BaseApiCommon.Mail.EMail.Name">
-            <summary>
-            名称
-            </summary>
-        </member>
-        <member name="P:BaseApiCommon.Mail.EMail.LoginName">
-            <summary>
-            登录帐号
-            </summary>
-        </member>
-        <member name="P:BaseApiCommon.Mail.EMail.Password">
-            <summary>
-            登录密码
-            </summary>
-        </member>
-        <member name="P:BaseApiCommon.Mail.EMail.FromAddress">
-            <summary>
-            发送人（通常是登录帐号邮箱）
-            </summary>
-        </member>
-        <member name="P:BaseApiCommon.Mail.EMail.ToAddress">
-            <summary>
-            接收者地址
-            </summary>
-        </member>
-        <member name="P:BaseApiCommon.Mail.EMail.Body">
-            <summary>
-            发送邮件内容
-            </summary>
-        </member>
-        <member name="P:BaseApiCommon.Mail.EMail.Subject">
-            <summary>
-            邮件主题
-            </summary>
-        </member>
-        <member name="P:BaseApiCommon.Mail.EMail.SmtpServerAddress">
-            <summary>
-            Smtp服务
-            </summary>
-        </member>
-        <member name="P:BaseApiCommon.Mail.EMail.SmtpPort">
-            <summary>
-            Smtp端口
-            </summary>
-        </member>
-        <member name="P:BaseApiCommon.Mail.EMail.PopServerAddress">
-            <summary>
-            Pop3服务地址
-            </summary>
-        </member>
-        <member name="T:BaseApiCommon.InvokeParam">
-            <summary>
-            Class InvokeParam
-            </summary>
-        </member>
-        <member name="F:BaseApiCommon.InvokeParam.Interface">
-            <summary>
-            The interface
-            </summary>
-        </member>
-        <member name="F:BaseApiCommon.InvokeParam.MethodName">
-            <summary>
-            The method name
-            </summary>
-        </member>
-        <member name="F:BaseApiCommon.InvokeParam.Parameters">
-            <summary>
-            The parameters
             </summary>
         </member>
     </members>

@@ -39,6 +39,10 @@
     <Reference Include="BaseApiCommon">
       <HintPath>..\..\..\..\lib\trunk\common\BaseApiCommon.dll</HintPath>
     </Reference>
+    <Reference Include="HttpHelper, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\HttpHelper.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\Newtonsoft.Json.dll</HintPath>
@@ -102,12 +106,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\HuaBanCollect\CsharpHttpHelper\CsharpHttpHelper.csproj">
-      <Project>{966C2F8B-47E5-4E6D-ABFC-13501E739D25}</Project>
-      <Name>CsharpHttpHelper</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

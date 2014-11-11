@@ -9,6 +9,10 @@
             <TextBox x:Name="txt_vCode" Width="200" Height="26"></TextBox>
             <Image  x:Name="img_yzm" Width="200" Height="40" ></Image>
         </StackPanel>
-        <Button x:Name="btn_login" Width="70" Height="26" Content="登录" Click="btn_login_Click"></Button>
+        <StackPanel Orientation="Horizontal">
+            <Button x:Name="btn_login" Width="70" Height="26" Content="登录" Click="btn_login_Click"  />
+            <Button x:Name="btn_start" Width="70" Height="26" Content="开始监听"  Click="btn_start_Click"/>
+        </StackPanel>
+        <TextBox x:Name="txt_msg" Width="500" Height="100" Foreground="Red" VerticalScrollBarVisibility="Auto"   AcceptsReturn="True" TextWrapping="Wrap"></TextBox>
     </StackPanel>
 </Window>

@@ -13,6 +13,10 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using CsharpHttpHelper;
 using System.IO;
+using CsharpHttpHelper.Enum;
+using System.Text.RegularExpressions;
+using System.Threading;
+using CsharpHttpHelper.Helper;
 
 namespace QT
 {
@@ -31,7 +35,10 @@ namespace QT
             InitializeComponent();
             img_yzm.MouseDown += new MouseButtonEventHandler(img_yzm_MouseDown);
             txt_QQ.MouseLeave += new MouseEventHandler(txt_QQ_MouseLeave);
+            this.DoMsgEvent += MainWindow_DoMsgEvent;
         }
+
+
 
         void txt_QQ_MouseLeave(object sender, MouseEventArgs e)
         {
@@ -49,8 +56,8 @@ namespace QT
             //bool b = IsHaveYZM(qqNumber);
             //if (b)
             //{
-                byte[] buff = GetVCode(qqNumber);
-                img_yzm.Source = ConvertToImg(buff);
+            byte[] buff = GetVCode(qqNumber);
+            img_yzm.Source = ConvertToImg(buff);
             //}
 
         }
@@ -101,7 +108,8 @@ namespace QT
                 URL = "https://ssl.captcha.qq.com/getimage?aid=501004106&r=" + r + "&uin=" + qqNumber,
                 Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
                 Referer = "http://w.qq.com/",
-                //UserAgent = this._UserAgent 
+                //UserAgent = this._UserAgent  
+                ResultType = ResultType.Byte,
                 Cookie = _Cookies
             };
             _Result = _Http.GetHtml(_Item);
@@ -141,8 +149,180 @@ namespace QT
                 Cookie = this._Cookies,
                 ContentType = "application/x-www-form-urlencoded"
             };
-            HttpResult result = this._Http.GetHtml(this._Item);
+            _Result = this._Http.GetHtml(this._Item);
+
+            this._Cookies = Utilities.MergerCookies(this._Cookies, this._Result.Cookie);
+            this._ptwebqq = Utilities.GetCookieValue(this._Cookies, "ptwebqq");
+            Match match = new Regex("ptuiCB\\(\\'(.*)\\',\\'(.*)\\',\\'(.*)\\',\\'(.*)\\',\\'(.*)\\',[\\s]\\'(.*)\\'\\);").Match(this._Result.Html);
+            if (match.Groups[1].Value != "0")
+            {
+                //  throw new Exception(match.Groups[5].Value);
+
+                MessageBox.Show(match.Groups[5].Value);
+            }
+            qqumber = match.Groups[6].Value;
+            this._Item = new HttpItem
+            {
+                URL = match.Groups[3].Value,
+                Accept = "text/html, application/xhtml+xml, */*",
+                Cookie = this._Cookies
+            };
+            this._Result = this._Http.GetHtml(this._Item);
+            this._Cookies = Utilities.MergerCookies(this._Cookies, this._Result.Cookie);
+
+            this._ptwebqq = Utilities.GetCookieValue(this._Cookies, "ptwebqq");
+            Channel(_ptwebqq);
+            if (DoMsgEvent != null)
+            {
+                DoMsgEvent(this._Result.Html);
+            }
             return true;
         }
+        private string _ptwebqq;
+        private string _clientid = (new Random().Next(100000, 1000000)).ToString();
+        string _vfwebqq;
+        string _psessionid;
+        private void Channel(string _ptwebqq)
+        {
+            string postdata = "r=" + Utilities.UTF8(string.Concat(new string[]
+			{
+				"{\"ptwebqq\":\"", 
+				this._ptwebqq, 
+				"\",\"clientid\":", 
+				this._clientid, 
+				",\"psessionid\":\"\",\"status\":\"", 
+				this.GetStatusByKey(10), 
+				"\"}"
+			}), true);
+            this._Item = new HttpItem
+            {
+                URL = "http://d.web2.qq.com/channel/login2",
+                Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                Referer = "http://d.web2.qq.com/proxy.html?v=20130916001&callback=1&id=2",
+                UserAgent = this._UserAgent,
+                ContentType = "application/x-www-form-urlencoded; charset=UTF-8",
+                Cookie = this._Cookies,
+                Method = "POST",
+                Postdata = postdata
+            };
+            this._Result = this._Http.GetHtml(this._Item);
+            this._Cookies = Utilities.MergerCookies(this._Cookies, Utilities.LiteCookies(this._Result.Cookie));
+            if (!this._Result.Html.Contains("\"retcode\":0"))
+            {
+                MessageBox.Show(this._Result.Html);
+            }
+            this._vfwebqq = Utilities.GetMidStr(this._Result.Html, "vfwebqq\":\"", "\",");
+            this._psessionid = Utilities.GetMidStr(this._Result.Html, "psessionid\":\"", "\",");
+        }
+        private string GetStatusByKey(int status)
+        {
+            string result;
+            if (status <= 40)
+            {
+                if (status == 10)
+                {
+                    result = "online";
+                    return result;
+                }
+                if (status == 30)
+                {
+                    result = "away";
+                    return result;
+                }
+                if (status == 40)
+                {
+                    result = "hidden";
+                    return result;
+                }
+            }
+            else
+            {
+                if (status == 50)
+                {
+                    result = "busy";
+                    return result;
+                }
+                if (status == 60)
+                {
+                    result = "callme";
+                    return result;
+                }
+                if (status == 70)
+                {
+                    result = "silent";
+                    return result;
+                }
+            }
+            result = "online";
+            return result;
+        }
+
+        private void btn_start_Click(object sender, RoutedEventArgs e)
+        {
+            StartPoll();
+        }
+        public void StartPoll()
+        {
+            Thread thread = new Thread(new ThreadStart(this.Poll));
+            thread.Start();
+            thread.IsBackground = true;
+        }
+
+        private void Poll()
+        {
+            while (true)
+            {
+                this._Item = new HttpItem
+                {
+                    URL = "http://d.web2.qq.com/channel/poll2",
+                    Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                    UserAgent = this._UserAgent,
+                    ContentType = "application/x-www-form-urlencoded; charset=UTF-8",
+                    Referer = "http://d.web2.qq.com/proxy.html?v=20130916001&callback=1&id=2",
+                    Cookie = this._Cookies,
+                    Method = "POST",
+                    Postdata = string.Concat(new string[]
+					{
+						"r={\"ptwebqq\":\"", 
+						this._ptwebqq, 
+						"\",\"clientid\":", 
+						this._clientid, 
+						",\"psessionid\":\"", 
+						this._psessionid, 
+						"\",\"key\":\"\"}"
+					})
+                };
+                this._Result = this._Http.GetHtml(this._Item);
+                if (this._Result.Html != null)
+                {
+                    if (DoMsgEvent != null)
+                    {
+                        DoMsgEvent(this._Result.Html);
+                    }
+                    //MessageResults messageResults = JsonHelper.DeserializeToObj<MessageResults>(this._Result.Html);
+                    //if (messageResults.Retcode != 102 && messageResults.Retcode != 116)
+                    //{
+                    //    if (messageResults != null && messageResults.MessageResult != null && this.OnReceiveMessagesHandler != null)
+                    //    {
+                    //        JArray jArray = new JArray();
+                    //        foreach (MessageResult current in messageResults.MessageResult)
+                    //        {
+                    //            jArray = (current.MessageValue.Content as JArray);
+                    //            if (jArray != null)
+                    //            {
+                    //                this.OnReceiveMessagesHandler(this._QQNumber, messageResults.Retcode, current.PollType, current.MessageValue, jArray[1].ToString());
+                    //            }
+                    //        }
+                    //    }
+                    //}
+                }
+            }
+        }
+        void MainWindow_DoMsgEvent(object msg)
+        {
+            txt_msg.Text += msg;
+        }
+        public event DoMsgHander DoMsgEvent;
     }
+    public delegate void DoMsgHander(object msg);
 }
