@@ -66,6 +66,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ByteBuffer.cs" />
+    <Compile Include="Global.cs" />
+    <Compile Include="MessageResult.cs" />
+    <Compile Include="MessageResults.cs" />
+    <Compile Include="MessageValue.cs" />
     <Compile Include="QQHelper.cs" />
     <Compile Include="QQMd5.cs" />
     <Compile Include="Utilities.cs" />
