@@ -29,6 +29,7 @@ namespace QT
         HttpItem _Item;
         string _login_sig;
         HttpResult _Result;
+        SynchronizationContext Current;
         private string _UserAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:29.0) Gecko/20100101 Firefox/29.0";
         public MainWindow()
         {
@@ -36,6 +37,7 @@ namespace QT
             img_yzm.MouseDown += new MouseButtonEventHandler(img_yzm_MouseDown);
             txt_QQ.MouseLeave += new MouseEventHandler(txt_QQ_MouseLeave);
             this.DoMsgEvent += MainWindow_DoMsgEvent;
+            Current = System.Threading.SynchronizationContext.Current;
         }
 
 
@@ -320,7 +322,11 @@ namespace QT
         }
         void MainWindow_DoMsgEvent(object msg)
         {
-            txt_msg.Text += msg;
+            //System.Threading.Thread.CurrentThread;
+            Current.Send(o =>
+            {
+                txt_msg.Text = msg.ToString();
+            }, null);
         }
         public event DoMsgHander DoMsgEvent;
     }
