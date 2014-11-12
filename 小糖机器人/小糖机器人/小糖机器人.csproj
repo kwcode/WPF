@@ -69,14 +69,27 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ByteBuffer.cs" />
+    <Compile Include="Model\Discus\DiscusResult.cs" />
+    <Compile Include="Model\Discus\DiscusResults.cs" />
+    <Compile Include="Model\Discus\DnameList.cs" />
+    <Compile Include="Model\Group\GmaskList.cs" />
+    <Compile Include="Model\Group\GroupResult.cs" />
+    <Compile Include="Model\Group\GroupResults.cs" />
+    <Compile Include="Model\Friends\CateGories.cs" />
+    <Compile Include="Model\Friends\FriendResult.cs" />
+    <Compile Include="Model\Friends\FriendResults.cs" />
+    <Compile Include="Model\Friends\Friends.cs" />
     <Compile Include="Global.cs" />
+    <Compile Include="Info.cs" />
     <Compile Include="JsonHelper.cs" />
-    <Compile Include="MessageResult.cs" />
-    <Compile Include="MessageResults.cs" />
-    <Compile Include="MessageValue.cs" />
+    <Compile Include="Model\Friends\MarkNames.cs" />
+    <Compile Include="Model\MSG\MessageResult.cs" />
+    <Compile Include="Model\MSG\MessageResults.cs" />
+    <Compile Include="Model\MSG\MessageValue.cs" />
     <Compile Include="QQHelper.cs" />
     <Compile Include="QQMd5.cs" />
     <Compile Include="Utilities.cs" />
+    <Compile Include="Model\Friends\VipInfo.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -119,6 +132,13 @@
     <Resource Include="20141112095245956_easyicon_net_72.ico" />
     <Resource Include="20141112095248704_easyicon_net_72.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\HuaBanCollect\CsharpHttpHelper\CsharpHttpHelper.csproj">
+      <Project>{966C2F8B-47E5-4E6D-ABFC-13501E739D25}</Project>
+      <Name>CsharpHttpHelper</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

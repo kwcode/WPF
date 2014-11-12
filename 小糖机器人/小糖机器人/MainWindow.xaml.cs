@@ -46,7 +46,6 @@ namespace QT
 
         void QQ_OnReceiveMessagesHandler(string qqNumber, int recode, string pollType, MessageValue msg, string content)
         {
-
             try
             {
                 this.Write(string.Concat(new object[]
@@ -187,6 +186,11 @@ namespace QT
                 Msg("登录失败\n");
                 SetVCode();
             }
+        }
+
+        private void btn_test_Click(object sender, RoutedEventArgs e)
+        {
+            QQ.GetGroupResults();
         }
 
         ////是否需要传入验证码

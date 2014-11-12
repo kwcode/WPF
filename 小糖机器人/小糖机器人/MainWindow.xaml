@@ -31,6 +31,7 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Button x:Name="btn_login" Width="70" Height="26" Content="登录" Click="btn_login_Click"  />
+                    <Button x:Name="btn_test" Width="70" Height="26" Content="测试" Click="btn_test_Click" />
                 </StackPanel>
                 <TextBox x:Name="txt_Status"></TextBox>
             </StackPanel>

@@ -7,6 +7,7 @@ using System.Threading;
 using System.Web;
 using CsharpHttpHelper.Helper;
 using System.IO;
+using System.Collections.Generic;
 namespace QT
 {
     /// <summary>
@@ -212,7 +213,7 @@ namespace QT
             if (!b)
                 return false;
             //登录成功开始监听
-            StartPoll();
+            // StartPoll();
             return true;
         }
         private bool Channel(string _ptwebqq)
@@ -239,7 +240,7 @@ namespace QT
                 Postdata = postdata
             };
             this._Result = this._Http.GetHtml(this._Item);
-            Global.Cookie = Utilities.MergerCookies(Global.Cookie, Utilities.LiteCookies(this._Result.Cookie));
+            //  Global.Cookie = Utilities.MergerCookies(Global.Cookie, Utilities.LiteCookies(this._Result.Cookie));
             if (!this._Result.Html.Contains("\"retcode\":0"))
             {
                 Msg(this._Result.Html);
@@ -417,7 +418,7 @@ namespace QT
             string result;
             if (!string.IsNullOrEmpty(this._Result.Html))
             {
-                result = this._Result.Html.Replace("www.xiaodoubi.com", "^_^").Replace("小逗比网页版", "我是小糖机器人"); 
+                result = this._Result.Html.Replace("www.xiaodoubi.com", "^_^").Replace("小逗比网页版", "我是小糖机器人");
             }
             else
             {
@@ -428,6 +429,7 @@ namespace QT
         }
 
         #endregion
+
         #region 辅助方法
 
         private string GetStatusByKey(int status)
@@ -484,6 +486,48 @@ namespace QT
                 OnMsgEvent(date + " ：" + msg + "\n");
             }
         }
+
+        #endregion
+
+        #region 群相关
+        public string hash = "0102030804010403050A00525B00085752000257560D500D0657010B57020C045B500C0C0302560C500C5507055703565D03085205070407055B500A500C560041514B424E5946501254424A5E4B";
+        public GroupResults GetGroupResults()
+        {
+            //  List<GroupResults> list = new List<GroupResults>();
+            this._Item = new HttpItem
+            {
+                URL = "http://s.web2.qq.com/api/get_group_name_list_mask2",
+                Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                UserAgent = this._UserAgent,
+                ContentType = "application/x-www-form-urlencoded; charset=UTF-8",
+                Referer = "http://s.web2.qq.com/proxy.html?v=20130916001&callback=1&id=1",
+                Cookie = Global.Cookie,
+                //uin_cookie=353328333; euin_cookie=9E95C0258B83356E8F07D4DF2E5C5472F04F283EA818D0A9; ac=1,030,012; pgv_pvid=7912107701; o_cookie=353328333; pt2gguin=o0210819644; RK=rfNfD4PxFX; ptcz=15d353bc6e692427fdf9c321e9f818b64e4931b3675ea8f21c1062a0c79a7ad3; pgv_pvi=5265247232; ptui_loginuin=353328333; pgv_info=ssid=s15372600; ptisp=cnc; verifysession=h02n7EEaTKKAuMYFDXYeaDue7UrTqcwycpdcc0_MUUUywO3PdIJJ-XEOiIVtLHZdR5hhUgGt5ruf9-hbAn1bVGBWw**; uin=o0210819644; skey=@UWzmn2jAJ; ptwebqq=a84b95c96e33655d6b9e1524c06788b7e47318bca62de5ad9da2335acec4320a; p_uin=o0210819644; p_skey=vJd4I3r0IWf8yJ*KyGIwHqxuUlNxGw3eFJ03eWRUMes_; pt4_token=s2rLgjkddDVIg*ZwrhRt9Q__
+                Method = "POST",
+                Postdata = string.Concat(new string[]
+					{
+						"r={\"vfwebqq\":\"", 
+                        Global.VfWebQQ, 
+						"\",\"hash\":", 
+                        hash,    
+						"\"}"
+					})
+            };
+            this._Result = this._Http.GetHtml(this._Item);
+            if (this._Result.Html != null)
+            {
+                GroupResults GroupResults = JsonHelper.DeserializeToObj<GroupResults>(this._Result.Html);
+                return GroupResults;
+            }
+            return null;
+
+        }
+
+        #endregion
+        #region 好友
+
+        #endregion
+        #region 讨论组
 
         #endregion
         public event ReceiveMessages OnReceiveMessagesHandler;
