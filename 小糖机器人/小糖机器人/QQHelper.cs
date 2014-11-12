@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web;
 using CsharpHttpHelper.Helper;
+using System.IO;
 namespace QT
 {
     /// <summary>
@@ -285,6 +286,10 @@ namespace QT
                 if (this._Result.Html != null)
                 {
                     MessageResults messageResults = JsonHelper.DeserializeToObj<MessageResults>(this._Result.Html);
+                    if (messageResults == null)
+                    {
+                        continue;
+                    }
                     if (messageResults.Retcode != 102 && messageResults.Retcode != 116)
                     {
                         if (messageResults != null && messageResults.MessageResult != null && this.OnReceiveMessagesHandler != null)
@@ -307,6 +312,123 @@ namespace QT
             }
         }
 
+        #region 发送消息
+
+        public bool SendMsgToFriend(string uin, string content)
+        {
+            string postData = string.Concat(new string[]
+			{
+				"{\"to\":", 
+				uin, 
+				",\"content\":\"[\\\"", 
+				content, 
+				"\\\",[\\\"font\\\",{\\\"name\\\":\\\"宋体\\\",\\\"size\\\":10,\\\"style\\\":[0,0,0],\\\"color\\\":\\\"000000\\\"}]]\",\"face\":675,\"clientid\":", 
+				Global.ClientID, 
+				",\"msg_id\":", 
+				Utilities.GetRnd(8), 
+				",\"psessionid\":\"", 
+				Global.PsessionID, 
+				"\"}"
+			});
+            Msg("UID:" + uin + ",发送内容：" + content);
+            return this.SendMsg(postData, "http://d.web2.qq.com/channel/send_buddy_msg2");
+
+        }
+        public bool SendMsgToSess(string uin, string content)
+        {
+            string postData = string.Concat(new string[]
+			{
+				"{\"to\":", 
+				uin, 
+				",\"content\":\"[\\\"", 
+				content, 
+				"\\\",[\\\"font\\\",{\\\"name\\\":\\\"宋体\\\",\\\"size\\\":10,\\\"style\\\":[0,0,0],\\\"color\\\":\\\"000000\\\"}]]\",\"face\":675,\"clientid\":", 
+				Global.ClientID, 
+				",\"msg_id\":", 
+				Utilities.GetRnd(8), 
+				",\"psessionid\":\"", 
+				Global.PsessionID, 
+				"\"}"
+			});
+            Msg("UID:" + uin + ",发送内容：" + content);
+            return this.SendMsg(postData, "http://d.web2.qq.com/channel/send_sess_msg2");
+        }
+        public bool SendMsgToGroup(string uin, string content)
+        {
+            string postData = string.Concat(new string[]
+			{
+				"{\"group_uin\":", 
+				uin, 
+				",\"content\":\"[\\\"", 
+				content, 
+				"\\\",[\\\"font\\\",{\\\"name\\\":\\\"宋体\\\",\\\"size\\\":10,\\\"style\\\":[0,0,0],\\\"color\\\":\\\"000000\\\"}]]\",\"face\":675,\"clientid\":", 
+				Global.ClientID, 
+				",\"msg_id\":", 
+				Utilities.GetRnd(8), 
+				",\"psessionid\":\"", 
+			Global.PsessionID, 
+				"\"}"
+			});
+            Msg("UID:" + uin + ",发送内容：" + content);
+            return this.SendMsg(postData, "http://d.web2.qq.com/channel/send_qun_msg2");
+        }
+        public bool SendMsgToDiscu(string uin, string content)
+        {
+            string postData = string.Concat(new string[]
+			{
+				"{\"did\":", 
+				uin, 
+				",\"content\":\"[\\\"", 
+				content, 
+				"\\\",[\\\"font\\\",{\\\"name\\\":\\\"宋体\\\",\\\"size\\\":10,\\\"style\\\":[0,0,0],\\\"color\\\":\\\"000000\\\"}]]\",\"face\":675,\"clientid\":", 
+			Global.ClientID,  
+				",\"msg_id\":", 
+				Utilities.GetRnd(8), 
+				",\"psessionid\":\"", 
+				Global.PsessionID, 
+				"\"}"
+			});
+            Msg("UID:" + uin + ",发送内容：" + content);
+            return this.SendMsg(postData, "http://d.web2.qq.com/channel/send_discu_msg2");
+        }
+        private bool SendMsg(string postData, string url)
+        {
+            this._Item = new HttpItem
+            {
+                URL = url,
+                Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                UserAgent = this._UserAgent,
+                ContentType = "application/x-www-form-urlencoded; charset=UTF-8",
+                Referer = "http://d.web2.qq.com/proxy.html?v=20130916001&callback=1&id=2",
+                Cookie = Global.Cookie,
+                Method = "POST",
+                Postdata = "r=" + HttpUtility.UrlEncode(postData)
+            };
+            this._Result = this._Http.GetHtml(this._Item);
+            return this._Result.Html != null && this._Result.Html.Contains("retcode\":0");
+        }
+        public string Ask(string content)
+        {
+            this._Item = new HttpItem
+            {
+                URL = "http://www.xiaodoubi.com/bot/api.php?chat=" + content
+            };
+            this._Result = this._Http.GetHtml(this._Item);
+            string result;
+            if (!string.IsNullOrEmpty(this._Result.Html))
+            {
+                result = this._Result.Html.Replace("www.xiaodoubi.com", "^_^").Replace("小逗比网页版", "我是小糖机器人"); 
+            }
+            else
+            {
+
+                result = "尼玛、、、说的什么东东？听不懂啊！";
+            }
+            return result;
+        }
+
+        #endregion
+        #region 辅助方法
 
         private string GetStatusByKey(int status)
         {
@@ -359,10 +481,11 @@ namespace QT
             if (OnMsgEvent != null)
             {
                 string date = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
-                OnMsgEvent(date + " ：" + msg +"\n");
+                OnMsgEvent(date + " ：" + msg + "\n");
             }
         }
 
+        #endregion
         public event ReceiveMessages OnReceiveMessagesHandler;
         /// <summary>
         /// 记录日志等

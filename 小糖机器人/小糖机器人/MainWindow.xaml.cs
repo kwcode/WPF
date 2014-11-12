@@ -32,6 +32,7 @@ namespace QT
         SynchronizationContext Current;
         private string _UserAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:29.0) Gecko/20100101 Firefox/29.0";
         QQHelper QQ = new QQHelper();
+        private string path = AppDomain.CurrentDomain.BaseDirectory + "\\log.txt";
         public MainWindow()
         {
             InitializeComponent();
@@ -39,7 +40,99 @@ namespace QT
             img_yzm.MouseDown += new MouseButtonEventHandler(img_yzm_MouseDown);
             txt_QQ.MouseLeave += new MouseEventHandler(txt_QQ_MouseLeave);
             QQ.OnMsgEvent += QQ_OnMsgEvent;
+            QQ.OnReceiveMessagesHandler += QQ_OnReceiveMessagesHandler;
 
+        }
+
+        void QQ_OnReceiveMessagesHandler(string qqNumber, int recode, string pollType, MessageValue msg, string content)
+        {
+
+            try
+            {
+                this.Write(string.Concat(new object[]
+				{
+					"===========================\r\n", 
+					pollType, 
+					"\r\n", 
+					msg.SendUin, 
+					"\r\n", 
+					content, 
+					"\r\n"
+				}));
+                string pollType2 = pollType;
+                bool b = true;
+                switch (pollType2)
+                {
+                    case "kick_message":
+                        {
+                            MessageBox.Show("您的账号已经掉线，错误代码（" + recode + ")");
+                            break;
+                        }
+                    case "message":
+                        {
+                            string uid = msg.FromUin.ToString();
+                            b = QQ.SendMsgToFriend(uid, QQ.Ask(content));
+                            break;
+                        }
+                    case "sess_message":
+                        {
+                            string uid = msg.FromUin.ToString();
+                            b = QQ.SendMsgToSess(uid, QQ.Ask(content));
+                            break;
+                        }
+                    case "group_message":
+                        {
+                            string uid = msg.FromUin.ToString();
+                            b = QQ.SendMsgToGroup(uid, QQ.Ask(content));
+                            break;
+                        }
+                    case "discu_message":
+                        {
+                            string uid = msg.DiscuID.ToString();
+                            b = QQ.SendMsgToDiscu(uid, QQ.Ask(content));
+                            break;
+                        }
+                }
+                if (!b)
+                {
+                    Msg("机器人发送失败了！");
+                }
+            }
+            catch (Exception ex)
+            {
+                Global.SysContext.Send(delegate(object o)
+                 {
+                     FileStream fileStream = new FileStream(this.path, FileMode.Append, FileAccess.Write);
+                     StreamWriter streamWriter = new StreamWriter(fileStream);
+                     streamWriter.WriteLine(string.Concat(new string[]
+					{
+						"===========================\r\n", 
+						pollType, 
+						"\r\n", 
+						ex.Message, 
+						"\r\n", 
+						ex.StackTrace, 
+						"时间:", 
+						DateTime.Now.ToString(), 
+						"\r\n===========================\r\n"
+					}));
+                     streamWriter.Close();
+                     fileStream.Close();
+                 }
+                 , null);
+            }
+        }
+        private void Write(string msg)
+        {
+            Global.SysContext.Send(delegate(object o)
+            {
+                FileStream fileStream = new FileStream(this.path, FileMode.Append, FileAccess.Write);
+                StreamWriter streamWriter = new StreamWriter(fileStream);
+                streamWriter.WriteLine(msg + "时间:" + DateTime.Now.ToString());
+                streamWriter.Close();
+                fileStream.Close();
+            }
+            , null);
         }
         void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
@@ -83,7 +176,12 @@ namespace QT
         {
             bool b = QQ.Login(txt_QQ.Text, txt_Pwd.Text, txt_vCode.Text);
             if (b)
+            {
                 Msg("登录成功\n");
+                img_yzm.MouseDown -= new MouseButtonEventHandler(img_yzm_MouseDown);
+                txt_QQ.MouseLeave -= new MouseEventHandler(txt_QQ_MouseLeave);
+                img_yzm.Visibility = Visibility.Collapsed;
+            }
             else
             {
                 Msg("登录失败\n");
