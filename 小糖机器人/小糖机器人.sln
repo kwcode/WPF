@@ -1,9 +1,7 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "小糖机器人", "小糖机器人\小糖机器人.csproj", "{F3C08F0C-7D5B-4B67-8E58-33C8B8952257}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsharpHttpHelper", "..\HuaBanCollect\CsharpHttpHelper\CsharpHttpHelper.csproj", "{966C2F8B-47E5-4E6D-ABFC-13501E739D25}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,16 +23,6 @@ Global
 		{F3C08F0C-7D5B-4B67-8E58-33C8B8952257}.Release|Mixed Platforms.Build.0 = Release|x86
 		{F3C08F0C-7D5B-4B67-8E58-33C8B8952257}.Release|x86.ActiveCfg = Release|x86
 		{F3C08F0C-7D5B-4B67-8E58-33C8B8952257}.Release|x86.Build.0 = Release|x86
-		{966C2F8B-47E5-4E6D-ABFC-13501E739D25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{966C2F8B-47E5-4E6D-ABFC-13501E739D25}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{966C2F8B-47E5-4E6D-ABFC-13501E739D25}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{966C2F8B-47E5-4E6D-ABFC-13501E739D25}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{966C2F8B-47E5-4E6D-ABFC-13501E739D25}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{966C2F8B-47E5-4E6D-ABFC-13501E739D25}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{966C2F8B-47E5-4E6D-ABFC-13501E739D25}.Release|Any CPU.Build.0 = Release|Any CPU
-		{966C2F8B-47E5-4E6D-ABFC-13501E739D25}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{966C2F8B-47E5-4E6D-ABFC-13501E739D25}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{966C2F8B-47E5-4E6D-ABFC-13501E739D25}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
