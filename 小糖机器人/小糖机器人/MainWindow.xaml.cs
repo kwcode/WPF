@@ -190,7 +190,13 @@ namespace QT
 
         private void btn_test_Click(object sender, RoutedEventArgs e)
         {
-            QQ.GetGroupResults();
+            string uin = Global.Uin;// txt_Status.Text;
+            Msg(QQ.GetHash(uin, Global.PtWebQQ));
+        }
+
+        private void btn_Friends_Click(object sender, RoutedEventArgs e)
+        {
+            QQ.GetFriendResults();
         }
 
         ////是否需要传入验证码

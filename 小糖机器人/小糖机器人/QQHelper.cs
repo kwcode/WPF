@@ -8,6 +8,7 @@ using System.Web;
 using CsharpHttpHelper.Helper;
 using System.IO;
 using System.Collections.Generic;
+using System.Net;
 namespace QT
 {
     /// <summary>
@@ -18,6 +19,7 @@ namespace QT
 
         HttpItem _Item;
         HttpResult _Result;
+        public string _Hash;
         private string _UserAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:29.0) Gecko/20100101 Firefox/29.0";
         CsharpHttpHelper.HttpHelper _Http = new CsharpHttpHelper.HttpHelper();
 
@@ -58,7 +60,7 @@ namespace QT
                 };
 
                 this._Result = this._Http.GetHtml(this._Item);
-                //   Global.Cookie = Utilities.LiteCookies(this._Result.Cookie);
+                Global.Cookie = Utilities.LiteCookies(this._Result.Cookie);
                 Global.Login_Sig = Utilities.GetMidStr(this._Result.Html, "g_login_sig=encodeURIComponent\\(\\\"(?<value>.*?)\\\"\\)", 1);
 
             }
@@ -86,7 +88,7 @@ namespace QT
                 UserAgent = this._UserAgent
             };
             _Result = _Http.GetHtml(_Item);
-            //     Global.Cookie = Utilities.MergerCookies(Global.Cookie, Utilities.LiteCookies(this._Result.Cookie));
+            Global.Cookie = Utilities.MergerCookies(Global.Cookie, Utilities.LiteCookies(this._Result.Cookie));
             string code = _Result.Html;
             if (code.Contains("ptui_checkVC('0','"))     //不需要手动输入
             {
@@ -116,11 +118,10 @@ namespace QT
                 Cookie = Global.Cookie,
                 ResultType = ResultType.Byte,
                 ContentType = "application/x-www-form-urlencoded"
-
             };
             _Result = _Http.GetHtml(_Item);
-            //   System.Drawing.Image img = _Http.GetImage(_Item);
-            Global.Cookie = Utilities.MergerCookies(Global.Cookie, Utilities.LiteCookies(this._Result.Cookie));//缓存Cokkie
+            Global.Cookie = Utilities.MergerCookies(Global.Cookie, Utilities.LiteCookies(this._Result.Cookie));
+            Msg("获取验证码:" + _Result.Cookie + "\r\n");
             byte[] buff = _Result.ResultByte;
             return buff;
         }
@@ -147,6 +148,7 @@ namespace QT
             System.Drawing.Image img = _Http.GetImage(_Item);
             return img;
         }
+        public CookieCollection _CookColl;
         /// <summary>
         /// QQ登录
         /// 缓存Cookie
@@ -157,6 +159,7 @@ namespace QT
         /// <returns></returns>
         public bool Login(string qqumber, string password, string vcode)
         {
+            Msg("登录传入CoK:" + Global.Cookie + "\r\n");
             this._Item = new HttpItem
             {
                 URL = string.Concat(new object[]
@@ -181,7 +184,10 @@ namespace QT
                 ContentType = "application/x-www-form-urlencoded"
             };
             _Result = this._Http.GetHtml(this._Item);
-            Global.Cookie = Utilities.MergerCookies(Global.Cookie, Utilities.LiteCookies(this._Result.Cookie));
+            Global.Cookie = _Result.Cookie;//Utilities.MergerCookies(Global.Cookie, Utilities.LiteCookies(this._Result.Cookie));
+            Msg("LOGINn:" + _Result.Cookie + "\r\n");
+            Global.PtWebQQ = Utilities.GetCookieValue(Global.Cookie, "ptwebqq");
+            Msg("PtWebQQ:" + Global.PtWebQQ);
 
             Match match = new Regex("ptuiCB\\(\\'(.*)\\',\\'(.*)\\',\\'(.*)\\',\\'(.*)\\',\\'(.*)\\',[\\s]\\'(.*)\\'\\);").Match(this._Result.Html);
             if (match.Groups[1].Value != "0")
@@ -197,9 +203,8 @@ namespace QT
                 Cookie = Global.Cookie
             };
             this._Result = this._Http.GetHtml(this._Item);
-            Global.Cookie = Utilities.MergerCookies(Global.Cookie, this._Result.Cookie);
-
-            Global.PtWebQQ = Utilities.GetCookieValue(Global.Cookie, "ptwebqq");
+            Global.Cookie = Utilities.MergerCookies(Global.Cookie, Utilities.LiteCookies(this._Result.Cookie));
+            GetVfWebqq(Global.PtWebQQ, Global.ClientID);
             if (string.IsNullOrWhiteSpace(Global.PtWebQQ))
             {
                 Msg("ptwebqq为空！");
@@ -213,7 +218,7 @@ namespace QT
             if (!b)
                 return false;
             //登录成功开始监听
-            // StartPoll();
+            StartPoll();
             return true;
         }
         private bool Channel(string _ptwebqq)
@@ -240,15 +245,53 @@ namespace QT
                 Postdata = postdata
             };
             this._Result = this._Http.GetHtml(this._Item);
-            //  Global.Cookie = Utilities.MergerCookies(Global.Cookie, Utilities.LiteCookies(this._Result.Cookie));
             if (!this._Result.Html.Contains("\"retcode\":0"))
             {
                 Msg(this._Result.Html);
                 return false;
             }
-            Global.VfWebQQ = Utilities.GetMidStr(this._Result.Html, "vfwebqq\":\"", "\",");
+            Global.Uin = Utilities.GetMidStr(this._Result.Html, "uin\":", ",");
+            //  Global.VfWebQQ = Utilities.GetMidStr(this._Result.Html, "   \":\"", "\",");
             Global.PsessionID = Utilities.GetMidStr(this._Result.Html, "psessionid\":\"", "\",");
+            _Hash = GetHash(Global.Uin, Global.PtWebQQ);
+
             return true;
+        }
+        public bool GetVfWebqq(string ptwebqq, string clientid)
+        {
+            bool b = false;
+
+
+            this._Item = new HttpItem
+            {
+                URL = "http://cgi.connect.qq.com/report/report?strValue=0&nValue=11202&tag=0&qver=0.0.1&t=1416152367671",
+                Accept = "*/*",
+                Referer = "http://s.web2.qq.com/proxy.html?v=20130916001&callback=1&id=1",
+                UserAgent = this._UserAgent,
+                Cookie = Global.Cookie,
+                ContentType = "utf-8"
+            };
+            _Result = this._Http.GetHtml(this._Item);
+            this._Item = new HttpItem
+            {
+                URL = string.Concat(new object[]
+				{
+					"http://s.web2.qq.com/api/getvfwebqq?ptwebqq=", 
+					ptwebqq, 
+					"&clientid=", 
+                    53999199,
+					"&psessionid=", 
+                    "&t=1416152367671"   
+				}),
+                //Accept = "*/*",
+                //Referer = "http://s.web2.qq.com/proxy.html?v=20130916001&callback=1&id=1",
+                //UserAgent = this._UserAgent,
+                Cookie = Global.Cookie,
+                //ContentType = "utf-8"
+            };
+            _Result = this._Http.GetHtml(this._Item);
+            Global.VfWebQQ = Utilities.GetMidStr(this._Result.Html, "vfwebqq\":\"", "\"");
+            return b;
         }
         /// <summary>
         /// 开始监听
@@ -272,6 +315,7 @@ namespace QT
                     Referer = "http://d.web2.qq.com/proxy.html?v=20130916001&callback=1&id=2",
                     Cookie = Global.Cookie,
                     Method = "POST",
+
                     Postdata = string.Concat(new string[]
 					{
 						"r={\"ptwebqq\":\"", 
@@ -303,7 +347,7 @@ namespace QT
                                 {
                                     Global.SysContext.Send(o =>
                                     {
-                                        this.OnReceiveMessagesHandler(Global.QQNumber, messageResults.Retcode, current.PollType, current.MessageValue, jArray[1].ToString());
+                                        //    this.OnReceiveMessagesHandler(Global.QQNumber, messageResults.Retcode, current.PollType, current.MessageValue, jArray[1].ToString());
                                     }, null);
                                 }
                             }
@@ -487,10 +531,52 @@ namespace QT
             }
         }
 
+        /// <summary>
+        /// 获取Hash值
+        /// 更具js文件路径 http://web.qstatic.com/webqqpic/pubapps/0/50/eqq.all.js
+        /// 加密算法为 P=function(b,i)，有时候是 P=function(b,j)
+        /// </summary>
+        /// <param name="uin"></param>
+        /// <param name="ptwebqq"></param>
+        /// <returns></returns>
+        public string GetHash(string uin, string ptwebqq)
+        {
+            string a = ptwebqq + "password error";
+            string i = "";
+            List<int> E = new List<int>();
+            while (true)
+            {
+                if (i.Length <= a.Length)
+                {
+                    i += uin;
+                    if (i.Length == a.Length)
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    i = i.Substring(0, a.Length);
+                    break;
+                }
+            }
+            for (int c = 0; c < i.Length; c++)
+            {
+                int tmp = (char)i[c] ^ (char)a[c];
+                E.Add(tmp);
+            }
+            string[] seed = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F" };
+            i = "";
+            for (int c = 0; c < E.Count; c++)
+            {
+                i += seed[E[c] >> 4 & 15];
+                i += seed[E[c] & 15];
+            }
+            return i;
+        }
         #endregion
 
         #region 群相关
-        public string hash = "0102030804010403050A00525B00085752000257560D500D0657010B57020C045B500C0C0302560C500C5507055703565D03085205070407055B500A500C560041514B424E5946501254424A5E4B";
         public GroupResults GetGroupResults()
         {
             //  List<GroupResults> list = new List<GroupResults>();
@@ -509,7 +595,7 @@ namespace QT
 						"r={\"vfwebqq\":\"", 
                         Global.VfWebQQ, 
 						"\",\"hash\":", 
-                        hash,    
+                        _Hash,    
 						"\"}"
 					})
             };
@@ -525,6 +611,52 @@ namespace QT
 
         #endregion
         #region 好友
+        private string _Cookie;
+        public FriendResults GetFriendResults()
+        {
+
+            //this._Item = new HttpItem
+            //{
+            //    URL = "http://wspeed.qq.com/w.cgi?appid=1000164&touin=null&releaseversion=SMARTQQ&frequency=1&commandid=http%3A%2F%2Fs.web2.qq.com%2Fapi%2Fgetvfwebqq&resultcode=0&tmcost=42",
+            //    Accept = "image/png, image/svg+xml, image/*;q=0.8, */*;q=0.5",
+            //    UserAgent = this._UserAgent,
+            //    ContentType = "application/x-www-form-urlencoded; charset=UTF-8",
+            //    Referer = "http://w.qq.com/",
+            //    Cookie = _Cookie,//Global.Cookie,
+            //};
+            //this._Result = this._Http.GetHtml(this._Item);
+            Global.Cookie = Utilities.MergerCookies(Global.Cookie, Utilities.LiteCookies(this._Result.Cookie));
+            string postdata = "r=" + Utilities.UTF8(string.Concat(new string[]
+			{
+				"{\"vfwebqq\":\"", 
+				 Global.VfWebQQ,   
+				",\"hash\":\"", 
+			_Hash, 
+				"\"}"
+			}), true);
+            this._Item = new HttpItem
+           {
+               URL = "http://s.web2.qq.com/api/get_user_friends2",
+               Accept = "*/*",//"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+               UserAgent = this._UserAgent,
+               ContentType = "application/x-www-form-urlencoded",// "application/x-www-form-urlencoded; charset=UTF-8",
+               Referer = "http://s.web2.qq.com/proxy.html?v=20130916001&callback=1&id=1",
+               Host = "s.web2.qq.com",
+               Cookie = Global.Cookie,
+               //  CookieCollection = _CookColl,
+               //uin_cookie=353328333; euin_cookie=9E95C0258B83356E8F07D4DF2E5C5472F04F283EA818D0A9; ac=1,030,012; pgv_pvid=7912107701; o_cookie=353328333; pt2gguin=o0210819644; RK=rfNfD4PxFX; ptcz=15d353bc6e692427fdf9c321e9f818b64e4931b3675ea8f21c1062a0c79a7ad3; pgv_pvi=5265247232; ptui_loginuin=353328333; pgv_info=ssid=s15372600; ptisp=cnc; verifysession=h02n7EEaTKKAuMYFDXYeaDue7UrTqcwycpdcc0_MUUUywO3PdIJJ-XEOiIVtLHZdR5hhUgGt5ruf9-hbAn1bVGBWw**; uin=o0210819644; skey=@UWzmn2jAJ; ptwebqq=a84b95c96e33655d6b9e1524c06788b7e47318bca62de5ad9da2335acec4320a; p_uin=o0210819644; p_skey=vJd4I3r0IWf8yJ*KyGIwHqxuUlNxGw3eFJ03eWRUMes_; pt4_token=s2rLgjkddDVIg*ZwrhRt9Q__
+               Method = "POST",
+               Postdata = postdata
+           };
+            this._Result = this._Http.GetHtml(this._Item);
+            if (this._Result.Html != null)
+            {
+                FriendResults FriendResults = JsonHelper.DeserializeToObj<FriendResults>(this._Result.Html);
+                return FriendResults;
+            }
+            return null;
+
+        }
 
         #endregion
         #region 讨论组

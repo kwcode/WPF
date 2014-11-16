@@ -40,8 +40,8 @@ namespace QT
         /// 客户端ID
         /// </summary>
         public static string ClientID { get { return _ClientID; } set { _ClientID = value; } }
-        private static string _ClientID = GetRandNumber(100000, 1000000).ToString();
-
+        private static string _ClientID = GetRandNumber(100000000, 999999999).ToString();
+        public static string Uin { get; set; }
         public static string VfWebQQ { get; set; }
         public static string PsessionID { get; set; }
         public static int Status { get; set; }
