@@ -192,11 +192,14 @@ namespace QT
         {
             string uin = Global.Uin;// txt_Status.Text;
             Msg(QQ.GetHash(uin, Global.PtWebQQ));
+
+            //Msg(QQ.GetHash("761607380", "81c6158d4b703b6d5a0cb4bf0b4ec7ada0ae538ed9e69cddff1b7c7c4964e766"));
         }
 
         private void btn_Friends_Click(object sender, RoutedEventArgs e)
         {
             QQ.GetFriendResults();
+            QQ.GetGroupResults();
         }
 
         ////是否需要传入验证码

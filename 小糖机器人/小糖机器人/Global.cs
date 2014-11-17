@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Net;
 
 namespace QT
 {
@@ -17,6 +18,7 @@ namespace QT
         /// 缓存的Cookie
         /// </summary>
         public static string Cookie { get; set; }
+        public static CookieCollection CookieCollection { get; set; }
         /// <summary>
         /// 安全参数
         /// </summary>
@@ -40,11 +42,11 @@ namespace QT
         /// 客户端ID
         /// </summary>
         public static string ClientID { get { return _ClientID; } set { _ClientID = value; } }
-        private static string _ClientID = GetRandNumber(100000000, 999999999).ToString();
+        private static string _ClientID = "53999199"; //GetRandNumber(100000000, 999999999).ToString();
         public static string Uin { get; set; }
         public static string VfWebQQ { get; set; }
         public static string PsessionID { get; set; }
-        public static int Status { get; set; }
+        public static int Status = 10;
         /// <summary>
         /// 随机数字
         /// </summary>
