@@ -199,7 +199,8 @@ namespace QT
         private void btn_Friends_Click(object sender, RoutedEventArgs e)
         {
             QQ.GetFriendResults();
-            QQ.GetGroupResults();
+            //QQ.GetGroupResults();
+            //QQ.GetVfWebqq("", "");
         }
 
         ////是否需要传入验证码
