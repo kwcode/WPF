@@ -11,11 +11,11 @@ namespace QT
         [JsonProperty("face")]
         public int Face { get; set; }
         [JsonProperty("flag")]
-        public int Flag { get; set; }
+        public long Flag { get; set; }
         [JsonProperty("nick")]
-        public int Nick { get; set; }
+        public string Nick { get; set; }
         [JsonProperty("uin")]
-        public int Uin { get; set; }
+        public long Uin { get; set; }
 
     }
 }

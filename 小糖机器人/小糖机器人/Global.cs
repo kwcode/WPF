@@ -26,7 +26,7 @@ namespace QT
         /// <summary>
         /// 缓存当前登录的QQ号码
         /// </summary>
-        public static string QQNumber { get; set; }
+        public static string QQNickName { get; set; }
         /// <summary>
         ///访问空间的时候需要的参数 Gtk 
         /// </summary>
@@ -38,6 +38,7 @@ namespace QT
         ///登录后 Cookie里面取的
         /// </summary>
         public static string PtWebQQ { get; set; }
+        public static string Hash { get; set; }
         /// <summary>
         /// 客户端ID
         /// </summary>
@@ -65,6 +66,9 @@ namespace QT
             double r = rand.Next(minValue, maxValue);
             return r;
         }
+        #region 缓存数据
+        public static UserResults CurrentQQ { get; set; }
+        #endregion
 
     }
 }

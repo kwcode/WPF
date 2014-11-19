@@ -20,7 +20,6 @@ namespace QT
 
         HttpItem _Item;
         HttpResult _Result;
-        public string _Hash;
         private string _UserAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:29.0) Gecko/20100101 Firefox/29.0";
         CsharpHttpHelper.HttpHelper _Http = new CsharpHttpHelper.HttpHelper();
 
@@ -183,7 +182,7 @@ namespace QT
                ContentType = "application/x-www-form-urlencoded"
            };
             _Result = this._Http.GetHtml(this._Item);
-            Global.Cookie = _Result.Cookie;//Utilities.MergerCookies(Global.Cookie, Utilities.LiteCookies(this._Result.Cookie));
+            Global.Cookie = Utilities.MergerCookies(Global.Cookie, Utilities.LiteCookies(this._Result.Cookie));
             Global.PtWebQQ = Utilities.GetCookieValue(Global.Cookie, "ptwebqq");
             Msg("PtWebQQ:登录之前Hash" + Global.PtWebQQ);
 
@@ -211,9 +210,10 @@ namespace QT
                 return false;
             }
             //登录成功缓存QQ
-            Global.QQNumber = match.Groups[6].Value;
+            Global.QQNickName = match.Groups[6].Value;
             //根据获得的路径 
             //获取监听的相关参数
+            Msg(match.Groups[6].Value + match.Groups[5].Value);
             bool b = Channel(Global.PtWebQQ);
             if (!b)
                 return false;
@@ -252,18 +252,19 @@ namespace QT
                 Msg(this._Result.Html);
                 return false;
             }
+            UserResults userResults = JsonHelper.DeserializeToObj<UserResults>(this._Result.Html);
+            if (userResults == null)
+            {
+                return false;
+            }
+            Global.CurrentQQ = userResults;
             Global.Uin = Utilities.GetMidStr(this._Result.Html, "uin\":", ",");
-            //  Global.VfWebQQ = Utilities.GetMidStr(this._Result.Html, "   \":\"", "\","); 
             Global.PsessionID = Utilities.GetMidStr(this._Result.Html, "psessionid\":\"", "\",");
-            _Hash = GetHash(Global.Uin, Global.PtWebQQ);
-
+            Global.Hash = GetHash(Global.Uin, Global.PtWebQQ);
             return true;
         }
         public bool GetVfWebqq(string ptwebqq, string clientid)
         {
-            //ptwebqq = "d1437a4e148327a4fb55c3e3bfcd94c8398be22e5827d60d7a496a4b48edd555";
-            //Global.Cookie = "pgv_pvid=2436356776; uin_cookie=353328333; euin_cookie=3C086C4DBD3C4F56350235E6A3EA20E426529AA60B7291C7; ac=1,030,012; o_cookie=353328333; pgv_pvi=5658457088; ptui_loginuin=353328333; pt2gguin=o0761607380; RK=JfMXSaPRHX; ptcz=34dbb27b6ef370a92478d5b4c825ffff1d4b13dbae317d47cffa07a50310668a; pgv_info=ssid=s9096592624; ptisp=cnc; uin=o0761607380; skey=@fZSFjm0Zv; ptwebqq=d1437a4e148327a4fb55c3e3bfcd94c8398be22e5827d60d7a496a4b48edd555; p_uin=o0761607380; p_skey=xQ9KDMRIi8EV09kMXSLBm9wN5o888miJXfGVRc7jJfs_; pt4_token=U3Q15sqTdSBRlY27sqcIlA__";
-
             bool b = false;
             this._Item = new HttpItem
             {
@@ -577,7 +578,7 @@ namespace QT
         #region 群相关
         public GroupResults GetGroupResults()
         {
-            string postdata = "r={\"vfwebqq\":\"" + Global.VfWebQQ + "\",\"hash\":\"" + _Hash + "\"}";
+            string postdata = "r={\"vfwebqq\":\"" + Global.VfWebQQ + "\",\"hash\":\"" + Global.Hash + "\"}";
             this._Item = new HttpItem
             {
                 URL = "http://s.web2.qq.com/api/get_group_name_list_mask2",
@@ -608,7 +609,11 @@ namespace QT
         #region 好友
         public FriendResults GetFriendResults()
         {
-            string postdata = "r={\"vfwebqq\":\"" + Global.VfWebQQ + "\",\"hash\":\"" + _Hash + "\"}";
+            Global.VfWebQQ = "119e54d9391c765e723dc0f58b67c869103dff495ae09ab1f25492e5606aa23c75d96c117b3a139d";
+            Global.Hash = "5457025E500101010D0A04565A085C0404565357035C040C5007070702045C55580507560A05000B080D53060C0152060A525C0257050403550A09005707015641514B424E5946501254424A5E4B";
+            Global.Cookie = "login_param=daid%3D164%26target%3Dself%26style%3D16%26mibao_css%3Dm_webqq%26appid%3D501004106%26enable_qlogin%3D0%26no_verifyimg%3D1%26s_url%3Dhttp%253A%252F%252Fw.qq.com%252Fproxy.html%26f_url%3Dloginerroralert%26strong_login%3D1%26login_state%3D10%26t%3D20131024001;uikey=36efaf46b9adf3ead5b93c8e21d2e6f3f75e9e3707bf995d5fa60f9e56e996c3;pt_user_id=6726578437350695307;ptui_identifier=000D52CA7CBDA64D6298C9EC04AE6CD25A0AC4ED32854C6325780158;confirmuin=0;verifysession=h02sbu3YnRLFP7Jv7PZSeZdo-ADx7sJoWCc2SbERMqscghVVY093ihmaqX8-p9o6DxGWB_NtWL5eR7JuzjEvBhZ-Q**;superuin=o0210819644;superkey=WLLxfVzV2z64t2*siCCtkpQt9n7erGlOSKcmqyBrmOw_;supertoken=1681718692;ptisp=cnc;RK=kLH/RqwBOL;ptuserinfo=e5b08fe7b396e69cbae599a8e4baba;ptcz=0f59939df2cf32bccfb4d590c460f73c8636726efb6ee5e9c06bd5134bfc3069;ptwebqq=ff2fa875985fb9e20baf3d55f33534dda33b840394e283c62ce4c162e289a35d;pt2gguin=o0210819644;skey=@1AkZIzdLd;p_uin=o0210819644;p_skey=PGc53RLYxOV6yrmZvq2inogj3rBu7U4ZU5bZx8j*Sv4_;pt4_token=cPv7U9Gt8hXQ-9DsBA5S1g__;";
+
+            string postdata = "r={\"vfwebqq\":\"" + Global.VfWebQQ + "\",\"hash\":\"" + Global.Hash + "\"}";
             this._Item = new HttpItem
             {
                 URL = "http://s.web2.qq.com/api/get_user_friends2",
