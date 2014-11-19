@@ -11,7 +11,7 @@ namespace QT
         [JsonProperty("vip_level")]
         public int VipLevel { get; set; }
         [JsonProperty("u")]
-        public int U { get; set; }
+        public long U { get; set; }
         [JsonProperty("is_vip")]
         public int IsVip { get; set; }
     }

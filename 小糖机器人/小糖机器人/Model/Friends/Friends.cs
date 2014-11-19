@@ -11,7 +11,7 @@ namespace QT
         [JsonProperty("flag")]
         public int Flag { get; set; }
         [JsonProperty("uin")]
-        public int Uin { get; set; }
+        public long Uin { get; set; }
         [JsonProperty("categories")]
         public int CateGories { get; set; }
 

@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
 
+
 namespace QT
 {
-    public class FriendResults
+    public class UserResults
     {
+
         [JsonProperty("retcode")]
         public int Retcode
         {
@@ -15,7 +17,7 @@ namespace QT
             set;
         }
         [JsonProperty("result")]
-        public FriendResult FriendResult
+        public UserResult UserResult
         {
             get;
             set;
