@@ -1,4 +1,6 @@
-﻿<Window xmlns:my="clr-namespace:QT"  x:Class="QT.QQMain"
+﻿<Window 
+        xmlns:my="clr-namespace:QT"
+        x:Class="QT.QQMain"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="QQMain" Height="300" Width="500">
@@ -21,7 +23,7 @@
                     </LinearGradientBrush>
                 </ToolBar.Background>
             </ToolBar>
-            
+
         </Grid>
         <GridSplitter HorizontalAlignment="Stretch" Grid.Row="1"  Height="2" ></GridSplitter>
         <Grid Grid.Row="2">

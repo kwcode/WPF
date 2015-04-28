@@ -48,6 +48,7 @@ namespace QT
         public static string VfWebQQ { get; set; }
         public static string PsessionID { get; set; }
         public static int Status = 10;
+        public static string VerifySession { get; set; }
         /// <summary>
         /// 随机数字
         /// </summary>
@@ -57,6 +58,7 @@ namespace QT
             double r = rand.NextDouble();
             return r;
         }
+
         /// <summary>
         /// 随机数字
         /// </summary>

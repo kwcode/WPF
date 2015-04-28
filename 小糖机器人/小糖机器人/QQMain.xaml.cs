@@ -25,13 +25,36 @@ namespace QT
         public QQMain()
         {
             InitializeComponent();
-            QQ.OnMsgEvent += new LogMessagesHandler(QQ_OnMsgEvent);
-            QQ.OnReceiveMessagesHandler += new ReceiveMessages(QQ_OnReceiveMessagesHandler);
+            this.Loaded += QQMain_Loaded;
+            QQ.OnMessagesNoticeEvent += new MessagesNoticeHandler(QQ_OnMessagesNoticeEvent);
+            QQ.OnReceiveMessagesEvent += QQ_OnReceiveMessagesEvent;
+            QQ.StartPoll();
             myMsg.Msg(Global.QQNickName);
         }
 
-        void QQ_OnReceiveMessagesHandler(string qqNumber, int recode, string pollType, MessageValue msg, string content)
+        void QQMain_Loaded(object sender, RoutedEventArgs e)
         {
+            Global.SysContext.Send(o =>
+            {
+                myMsg.Msg("Cookie:" + Global.Cookie);
+                myMsg.Msg("ClientID:" + Global.ClientID);
+                myMsg.Msg("PtWebQQ:" + Global.PtWebQQ);
+                myMsg.Msg("VfWebQQ:" + Global.VfWebQQ);
+                myMsg.Msg("PsessionID:" + Global.PsessionID);
+            }, null);
+        }
+
+        private void QQ_OnMessagesNoticeEvent(object msg)
+        {
+            Global.SysContext.Send(o =>
+                                     {
+                                         myMsg.Msg(msg.ToString());
+                                     }, null);
+        }
+
+        void QQ_OnReceiveMessagesEvent(string qqNumber, int recode, string pollType, MessageValue msg, string content)
+        {
+            QQ.msg("收到" + qqNumber + "的消息:" + content);
             try
             {
                 this.Write(string.Concat(new object[]
@@ -80,7 +103,7 @@ namespace QT
                 }
                 if (!b)
                 {
-                    Msg("机器人发送失败了！");
+                    QQ.msg("机器人发送失败了！");
                 }
             }
             catch (Exception ex)
@@ -119,15 +142,7 @@ namespace QT
             }
             , null);
         }
-        void QQ_OnMsgEvent(object msg)
-        {
-            Msg(msg.ToString());
-        }
 
-        private void Msg(string msg)
-        {
-            myMsg.Msg(msg);
-        }
 
         private void btn_Seting_Click(object sender, RoutedEventArgs e)
         {

@@ -15,7 +15,7 @@ namespace QT
     /// <summary>
     /// QQ
     /// </summary>
-    public class QQHelper
+    public class QQHelper : MessageProc
     {
 
         HttpItem _Item;
@@ -26,17 +26,6 @@ namespace QT
         public QQHelper()
         {
             DoLogin_Sig();
-            this.OnMsgEvent += QQHelper_OnMsgEvent;
-            this.OnReceiveMessagesHandler += QQHelper_OnReceiveMessagesHandler;
-        }
-
-        void QQHelper_OnReceiveMessagesHandler(string qqNumber, int recode, string pollType, MessageValue msg, string content)
-        {
-            Msg(content);
-        }
-
-        void QQHelper_OnMsgEvent(object msg)
-        {
 
         }
         /// <summary>
@@ -70,21 +59,21 @@ namespace QT
             }
         }
 
+        #region 登录相关==========================================================
         /// <summary>
-        ///   是否需要传入验证码
+        ///   获取默认的验证码
         /// </summary>
-        /// <param name="qqNumber"></param>
+        /// <param name="qqNumber">QQ号</param>
         /// <returns></returns>
-        public bool IsHaveYZM(string qqNumber)
+        public string GetDefaultVC(string qqNumber)
         {
-            bool b = true;
-            string url = string.Format(@"https://ssl.ptlogin2.qq.com/check?uin={0}&appid=501004106&js_ver=10100&js_type=0&login_sig=bvBwxw0945s7IRdDzb7QhrAMlC7s0kZiTF5cm*q6ddOD5zTxSvtiebgf0AC5Jble&u1=http%3A%2F%2Fw.qq.com%2Fproxy.html&r={1}", qqNumber, Global.GetRandNumber()); ;
-
+            string vccode = "";
+            string url = string.Format(@"https://ssl.ptlogin2.qq.com/check?pt_tea=1&uin={0}&appid=501004106&js_ver=10120&js_type=0&login_sig=&r=0.{1}", qqNumber, Global.GetRandNumber());
             this._Item = new HttpItem
             {
                 URL = url,
                 Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-                Referer = "http://w.qq.com/",
+                Referer = "https://ui.ptlogin2.qq.com/cgi-bin/login?daid=164&target=self&style=5&mibao_css=m_webqq&appid=501004106&enable_qlogin=0&no_verifyimg=1&s_url=http%3A%2F%2Fweb2.qq.com%2Floginproxy.html&f_url=loginerroralert&strong_login=1&login_state=10&t=20130723001",
                 UserAgent = this._UserAgent
             };
             _Result = _Http.GetHtml(_Item);
@@ -92,14 +81,18 @@ namespace QT
             string code = _Result.Html;
             if (code.Contains("ptui_checkVC('0','"))     //不需要手动输入
             {
-                code = code.Replace("ptui_checkVC('0','", "").Replace("'", "").Replace(")", "").Replace(";", "").Substring(0, 4);
-                b = false;
+                vccode = code.Replace("ptui_checkVC('0','", "").Replace("'", "").Replace(")", "").Replace(";", "").Substring(0, 4);
+                string v = code.Split(',')[3];
+                Global.VerifySession = v.Replace("'", "");
             }
             else if (code.Contains("ptui_checkVC('1',"))
             {
-                b = true;
+                string v = code.Split(',')[1];
+                Global.VerifySession = v.Replace("'", "");
             }
-            return b;
+            msg("新版VerifySession：" + Global.VerifySession);
+            return vccode;
+
         }
 
         /// <summary>
@@ -112,7 +105,7 @@ namespace QT
         {
             this._Item = new HttpItem
             {
-                URL = "https://ssl.captcha.qq.com/getimage?aid=501004106&r=" + Global.GetRandNumber() + "&uin=" + qqNumber,
+                URL = "https://ssl.captcha.qq.com/getimage?aid=501004106&r=0." + Global.GetRandNumber() + "&uin=" + qqNumber + "&cap_cd=" + Global.VerifySession,
                 Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
                 UserAgent = this._UserAgent,
                 Cookie = Global.Cookie,
@@ -120,15 +113,14 @@ namespace QT
                 ContentType = "application/x-www-form-urlencoded"
             };
             _Result = _Http.GetHtml(_Item);
+            Global.VerifySession = _Result.Cookie.Split(';')[0].Replace("verifysession=", "").Replace("'", "");
             Global.Cookie = Utilities.MergerCookies(Global.Cookie, Utilities.LiteCookies(this._Result.Cookie));
             byte[] buff = _Result.ResultByte;
             return buff;
         }
-
-
         /// <summary>
         ///  //获取验证码 并保存Cokies
-        ///  二进值
+        ///  图片格式
         /// </summary>
         /// <param name="qqNumber"></param>
         /// <returns></returns>
@@ -147,7 +139,6 @@ namespace QT
             System.Drawing.Image img = _Http.GetImage(_Item);
             return img;
         }
-        public CookieCollection _CookColl;
         /// <summary>
         /// QQ登录
         /// 缓存Cookie
@@ -158,38 +149,28 @@ namespace QT
         /// <returns></returns>
         public bool Login(string qqumber, string password, string vcode)
         {
+
+            string aa = yiwoSDK.CQQHelper.getNewP(password, Convert.ToInt32(qqumber), vcode.ToUpper());
+
+            string url = string.Format("https://ssl.ptlogin2.qq.com/login?u={0}&p={1}&verifycode={2}&webqq_type=10&remember_uin=1&login2qq=1&aid=501004106&u1=http%3A%2F%2Fw.qq.com%2Fproxy.html%3Flogin2qq%3D1%26webqq_type%3D10&h=1&ptredirect=0&ptlang=2052&daid=164&from_ui=1&pttype=1&dumy=&fp=loginerroralert&action=0-18-11874&mibao_css=m_webqq&t=1&g=1&js_type=0&js_ver=10114&login_sig=-aXo*5jnbbqIR-*F-7Pob2NDe72gcQ-5JktpqDo8rvDYyBHQbvYGoGi0x18dxKrZ&pt_randsalt=0&pt_vcode_v1=0&pt_verifysession_v1={3}", qqumber, aa, vcode.ToUpper(), Global.VerifySession);
             this._Item = new HttpItem
-           {
-               URL = string.Concat(new object[]
-				{
-					"https://ssl.ptlogin2.qq.com/login?u=", 
-					qqumber, 
-					"&p=", 
-					QQMd5.Encrypt(qqumber, password, vcode), 
-					"&verifycode=", 
-					vcode, 
-					"&webqq_type=", 
-					10, 
-					"&remember_uin=1&login2qq=1&aid=501004106&u1=http%3A%2F%2Fw.qq.com%2Fproxy.html%3Flogin2qq%3D1%26webqq_type%3D10&h=1&ptredirect=0&ptlang=2052&daid=164&from_ui=1&pttype=1&dumy=&fp=loginerroralert&action=0-51-115221&mibao_css=m_webqq&t=3&g=1&js_type=0&js_ver=10099&login_sig=", 
-				    Global.Login_Sig, 
-					"&pt_vcode_v1=0&pt_verifysession_v1=", 
-					Utilities.GetCookieValue(Global.Cookie, "verifysession")
-				}),
-               Accept = "application/javascript, */*;q=0.8",
-               Referer = "https://ui.ptlogin2.qq.com/cgi-bin/login?daid=164&target=self&style=16&mibao_css=m_webqq&appid=501004106&enable_qlogin=0&no_verifyimg=1&s_url=http%3A%2F%2Fw.qq.com%2Fproxy.html&f_url=loginerroralert&strong_login=1&login_state=10&t=20131024001",
-               UserAgent = this._UserAgent,
-               Cookie = Global.Cookie,
-               ContentType = "application/x-www-form-urlencoded"
-           };
+            {
+                URL = url,
+                Accept = "application/javascript, */*;q=0.8",
+                Referer = "https://ui.ptlogin2.qq.com/cgi-bin/login?daid=164&target=self&style=16&mibao_css=m_webqq&appid=501004106&enable_qlogin=0&no_verifyimg=1&s_url=http%3A%2F%2Fw.qq.com%2Fproxy.html&f_url=loginerroralert&strong_login=1&login_state=10&t=20131024001",
+                UserAgent = this._UserAgent,
+                Cookie = Global.Cookie,
+                ContentType = "application/x-www-form-urlencoded"
+            };
             _Result = this._Http.GetHtml(this._Item);
             Global.Cookie = Utilities.MergerCookies(Global.Cookie, Utilities.LiteCookies(this._Result.Cookie));
             Global.PtWebQQ = Utilities.GetCookieValue(Global.Cookie, "ptwebqq");
-            Msg("PtWebQQ:登录之前Hash" + Global.PtWebQQ);
+            msg("PtWebQQ:登录之前Hash" + Global.PtWebQQ);
 
             Match match = new Regex("ptuiCB\\(\\'(.*)\\',\\'(.*)\\',\\'(.*)\\',\\'(.*)\\',\\'(.*)\\',[\\s]\\'(.*)\\'\\);").Match(this._Result.Html);
             if (match.Groups[1].Value != "0")
             {
-                Msg(match.Groups[5].Value + "错误代码：" + match.Groups[1].Value);
+                msg(match.Groups[5].Value + "错误代码：" + match.Groups[1].Value);
                 return false;
             }
             //请求正确的地址获取Cookie
@@ -203,17 +184,17 @@ namespace QT
             this._Result = this._Http.GetHtml(this._Item);
             Global.Cookie = Utilities.MergerCookies(Global.Cookie, Utilities.LiteCookies(this._Result.Cookie));
             Global.CookieCollection = _Result.CookieCollection;
-            GetVfWebqq(Global.PtWebQQ, Global.ClientID);
+            //  GetVfWebqq(Global.PtWebQQ, Global.ClientID);
             if (string.IsNullOrWhiteSpace(Global.PtWebQQ))
             {
-                Msg("ptwebqq为空！");
+                msg("ptwebqq为空！");
                 return false;
             }
             //登录成功缓存QQ
             Global.QQNickName = match.Groups[6].Value;
             //根据获得的路径 
             //获取监听的相关参数
-            Msg(match.Groups[6].Value + match.Groups[5].Value);
+            msg(match.Groups[6].Value + match.Groups[5].Value);
             bool b = Channel(Global.PtWebQQ);
             if (!b)
                 return false;
@@ -221,6 +202,8 @@ namespace QT
             //StartPoll();
             return true;
         }
+        public CookieCollection _CookColl;
+
         private bool Channel(string _ptwebqq)
         {
             string postdata = "r=" + Utilities.UTF8(string.Concat(new string[]
@@ -247,9 +230,10 @@ namespace QT
                 Postdata = postdata
             };
             this._Result = this._Http.GetHtml(this._Item);
+          //  Global.Cookie = Utilities.MergerCookies(Global.Cookie, Utilities.LiteCookies(this._Result.Cookie));
             if (!this._Result.Html.Contains("\"retcode\":0"))
             {
-                Msg(this._Result.Html);
+                msg(this._Result.Html);
                 return false;
             }
             UserResults userResults = JsonHelper.DeserializeToObj<UserResults>(this._Result.Html);
@@ -261,6 +245,7 @@ namespace QT
             Global.Uin = Utilities.GetMidStr(this._Result.Html, "uin\":", ",");
             Global.PsessionID = Utilities.GetMidStr(this._Result.Html, "psessionid\":\"", "\",");
             Global.Hash = GetHash(Global.Uin, Global.PtWebQQ);
+            Global.VfWebQQ = userResults.UserResult.Vfwebqq;
             return true;
         }
         public bool GetVfWebqq(string ptwebqq, string clientid)
@@ -287,11 +272,13 @@ namespace QT
             };
             _Result = this._Http.GetHtml(this._Item);
             Global.VfWebQQ = Utilities.GetMidStr(this._Result.Html, "vfwebqq\":\"", "\"");
-            Msg("VFQQgetvfwebqq->" + Global.VfWebQQ);
+            msg("VFQQgetvfwebqq->" + Global.VfWebQQ);
             return b;
         }
 
+        #endregion
 
+        #region 开始监听==========================================================
         /// <summary>
         /// 开始监听
         /// </summary>
@@ -336,7 +323,7 @@ namespace QT
                     }
                     if (messageResults.Retcode != 102 && messageResults.Retcode != 116)
                     {
-                        if (messageResults != null && messageResults.MessageResult != null && this.OnReceiveMessagesHandler != null)
+                        if (messageResults != null && messageResults.MessageResult != null)
                         {
                             JArray jArray = new JArray();
                             foreach (MessageResult current in messageResults.MessageResult)
@@ -344,10 +331,8 @@ namespace QT
                                 jArray = (current.MessageValue.Content as JArray);
                                 if (jArray != null)
                                 {
-                                    Global.SysContext.Send(o =>
-                                    {
-                                        //    this.OnReceiveMessagesHandler(Global.QQNumber, messageResults.Retcode, current.PollType, current.MessageValue, jArray[1].ToString());
-                                    }, null);
+                                    ReceiveMessages(Global.Uin, messageResults.Retcode, current.PollType, current.MessageValue, jArray[1].ToString());
+
                                 }
                             }
                         }
@@ -355,26 +340,27 @@ namespace QT
                 }
             }
         }
+        #endregion
 
-        #region 发送消息
+        #region 发送消息==========================================================
 
         public bool SendMsgToFriend(string uin, string content)
         {
             string postData = string.Concat(new string[]
-			{
-				"{\"to\":", 
-				uin, 
-				",\"content\":\"[\\\"", 
-				content, 
-				"\\\",[\\\"font\\\",{\\\"name\\\":\\\"宋体\\\",\\\"size\\\":10,\\\"style\\\":[0,0,0],\\\"color\\\":\\\"000000\\\"}]]\",\"face\":675,\"clientid\":", 
-				Global.ClientID, 
-				",\"msg_id\":", 
-				Utilities.GetRnd(8), 
-				",\"psessionid\":\"", 
-				Global.PsessionID, 
-				"\"}"
-			});
-            Msg("UID:" + uin + ",发送内容：" + content);
+            {
+                "{\"to\":", 
+                uin, 
+                ",\"content\":\"[\\\"", 
+                content, 
+                "\\\",[\\\"font\\\",{\\\"name\\\":\\\"宋体\\\",\\\"size\\\":10,\\\"style\\\":[0,0,0],\\\"color\\\":\\\"000000\\\"}]]\",\"face\":675,\"clientid\":", 
+                Global.ClientID, 
+                ",\"msg_id\":", 
+                Utilities.GetRnd(8), 
+                ",\"psessionid\":\"", 
+                Global.PsessionID, 
+                "\"}"
+            });
+            msg("UID:" + uin + ",发送内容：" + content);
             return this.SendMsg(postData, "http://d.web2.qq.com/channel/send_buddy_msg2");
 
         }
@@ -394,7 +380,7 @@ namespace QT
 				Global.PsessionID, 
 				"\"}"
 			});
-            Msg("UID:" + uin + ",发送内容：" + content);
+            msg("UID:" + uin + ",发送内容：" + content);
             return this.SendMsg(postData, "http://d.web2.qq.com/channel/send_sess_msg2");
         }
         public bool SendMsgToGroup(string uin, string content)
@@ -413,7 +399,7 @@ namespace QT
 			Global.PsessionID, 
 				"\"}"
 			});
-            Msg("UID:" + uin + ",发送内容：" + content);
+            msg("UID:" + uin + ",发送内容：" + content);
             return this.SendMsg(postData, "http://d.web2.qq.com/channel/send_qun_msg2");
         }
         public bool SendMsgToDiscu(string uin, string content)
@@ -432,7 +418,7 @@ namespace QT
 				Global.PsessionID, 
 				"\"}"
 			});
-            Msg("UID:" + uin + ",发送内容：" + content);
+            msg("UID:" + uin + ",发送内容：" + content);
             return this.SendMsg(postData, "http://d.web2.qq.com/channel/send_discu_msg2");
         }
         private bool SendMsg(string postData, string url)
@@ -473,7 +459,7 @@ namespace QT
 
         #endregion
 
-        #region 辅助方法
+        #region 辅助方法==========================================================
 
         private string GetStatusByKey(int status)
         {
@@ -517,18 +503,7 @@ namespace QT
             result = "online";
             return result;
         }
-        /// <summary>
-        /// 消息
-        /// </summary>
-        /// <param name="msg"></param>
-        public void Msg(object msg)
-        {
-            if (OnMsgEvent != null)
-            {
-                string date = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
-                OnMsgEvent(date + " ：" + msg + "\n");
-            }
-        }
+
 
         /// <summary>
         /// 获取Hash值
@@ -575,7 +550,7 @@ namespace QT
         }
         #endregion
 
-        #region 群相关
+        #region 群相关==========================================================
         public GroupResults GetGroupResults()
         {
             string postdata = "r={\"vfwebqq\":\"" + Global.VfWebQQ + "\",\"hash\":\"" + Global.Hash + "\"}";
@@ -606,7 +581,8 @@ namespace QT
         }
 
         #endregion
-        #region 好友
+
+        #region 好  友==========================================================
         public FriendResults GetFriendResults()
         {
             Global.VfWebQQ = "119e54d9391c765e723dc0f58b67c869103dff495ae09ab1f25492e5606aa23c75d96c117b3a139d";
@@ -636,15 +612,10 @@ namespace QT
         }
 
         #endregion
-        #region 讨论组
+
+        #region 讨论 组==========================================================
 
         #endregion
-        public event ReceiveMessages OnReceiveMessagesHandler;
-        /// <summary>
-        /// 记录日志等
-        /// </summary>
-        public event LogMessagesHandler OnMsgEvent;
+
     }
-    public delegate void ReceiveMessages(string qqNumber, int recode, string pollType, MessageValue msg, string content);
-    public delegate void LogMessagesHandler(object msg);
 }

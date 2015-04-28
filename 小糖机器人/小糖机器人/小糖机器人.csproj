@@ -69,6 +69,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ByteBuffer.cs" />
+    <Compile Include="LogsRecord.cs" />
+    <Compile Include="MessageProc.cs" />
     <Compile Include="Model\Discus\DiscusResult.cs" />
     <Compile Include="Model\Discus\DiscusResults.cs" />
     <Compile Include="Model\Discus\DnameList.cs" />
@@ -86,7 +88,15 @@
     <Compile Include="Model\MSG\MessageResult.cs" />
     <Compile Include="Model\MSG\MessageResults.cs" />
     <Compile Include="Model\MSG\MessageValue.cs" />
+    <Compile Include="Model\User\UserResult.cs" />
+    <Compile Include="Model\User\UserResults.cs" />
+    <Compile Include="MsgTextBox.xaml.cs">
+      <DependentUpon>MsgTextBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="QQHelper.cs" />
+    <Compile Include="QQMain.xaml.cs">
+      <DependentUpon>QQMain.xaml</DependentUpon>
+    </Compile>
     <Compile Include="QQMd5.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="Model\Friends\VipInfo.cs" />
@@ -102,6 +112,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="MsgTextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="QQMain.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -136,6 +154,10 @@
     <ProjectReference Include="..\..\HuaBanCollect\CsharpHttpHelper\CsharpHttpHelper.csproj">
       <Project>{966C2F8B-47E5-4E6D-ABFC-13501E739D25}</Project>
       <Name>CsharpHttpHelper</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\tuoling04\Desktop\TKW\yiwoSDK2.8.1源码\yiwoSDK2.8.1源码\SRC\yiwoSDK.csproj">
+      <Project>{8bd792bc-2316-4de5-8b36-e591029a22b1}</Project>
+      <Name>yiwoSDK</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

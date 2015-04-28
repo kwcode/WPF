@@ -26,48 +26,68 @@ namespace QT
     public partial class MainWindow : Window
     {
         QQHelper QQ = new QQHelper();
+        public string _QQNumber { get; set; }
         public MainWindow()
         {
             InitializeComponent();
+            yiwoSDK.CFun.I_LOVE_BBS("yiwowang.com");
             this.Loaded += MainWindow_Loaded;
             img_yzm.MouseDown += new MouseButtonEventHandler(img_yzm_MouseDown);
             txt_QQ.MouseLeave += new MouseEventHandler(txt_QQ_MouseLeave);
-            QQ.OnMsgEvent += QQ_OnMsgEvent;
+            QQ.OnMessagesNoticeEvent += new MessagesNoticeHandler(QQ_OnMessagesNoticeEvent);
         }
 
         void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             SetVCode();
         }
-        private void Msg(object msg)
+        private void QQ_OnMessagesNoticeEvent(object msg)
         {
-            txt_msg.Text += msg.ToString();
-            txt_msg.ScrollToEnd();
+            Msg(msg.ToString());
         }
-        void QQ_OnMsgEvent(object msg)
+        /// <summary>
+        /// 格式yyyy-MM-dd HH:mm:AAAbbb
+        /// </summary>
+        /// <param name="msg"></param>
+        public void Msg(string msg)
         {
-            Msg(msg);
+            Global.SysContext.Send(o =>
+            {
+                txt_msg.Text += DateTime.Now.ToString("yyyy-MM-dd HH:mm") + ": " + msg + "\n";
+                txt_msg.ScrollToEnd();
+            }, null);
+
         }
         void txt_QQ_MouseLeave(object sender, MouseEventArgs e)
         {
-            SetVCode();
-        }
 
+            if (!txt_QQ.Text.Equals(_QQNumber))
+            {
+                SetVCode();
+                _QQNumber = txt_QQ.Text;
+            }
+        }
         void img_yzm_MouseDown(object sender, MouseButtonEventArgs e)
         {
             SetVCode();
         }
+
         private void SetVCode()
         {
             string qqNumber = txt_QQ.Text;
-            bool b = QQ.IsHaveYZM(qqNumber);
-            if (b)
+            string vccode = QQ.GetDefaultVC(qqNumber);
+            if (string.IsNullOrEmpty(vccode))
             {
                 byte[] buff = QQ.GetByteVCode(qqNumber);
                 img_yzm.Source = ConvertToImg(buff);
             }
-
+            else
+            {
+                txt_vCode.Text = vccode;
+            }
         }
+
+
         public ImageSource ConvertToImg(byte[] buff)
         {
             ImageSource img = BaseApiCommon.ImageConvertCommon.ConvertByteToBitmapImage(buff);
@@ -78,7 +98,7 @@ namespace QT
             bool b = QQ.Login(txt_QQ.Text, txt_Pwd.Text, txt_vCode.Text);
             if (b)
             {
-                Msg("登录成功\n");
+                QQ.msg("登录成功\n");
                 img_yzm.MouseDown -= new MouseButtonEventHandler(img_yzm_MouseDown);
                 txt_QQ.MouseLeave -= new MouseEventHandler(txt_QQ_MouseLeave);
                 img_yzm.Visibility = Visibility.Collapsed;
@@ -89,7 +109,7 @@ namespace QT
             }
             else
             {
-                Msg("登录失败\n");
+                QQ.msg("登录失败\n");
                 SetVCode();
             }
         }
@@ -97,7 +117,7 @@ namespace QT
         private void btn_test_Click(object sender, RoutedEventArgs e)
         {
             string uin = Global.Uin;// txt_Status.Text;
-            Msg(QQ.GetHash(uin, Global.PtWebQQ));
+            QQ.msg(QQ.GetHash(uin, Global.PtWebQQ));
 
             //Msg(QQ.GetHash("761607380", "81c6158d4b703b6d5a0cb4bf0b4ec7ada0ae538ed9e69cddff1b7c7c4964e766"));
         }
