@@ -14,12 +14,12 @@
             <ToolBar Margin="2"  Height="30">
                 <Button Content="设置" Width="70" Height="28" x:Name="btn_Seting" Click="btn_Seting_Click"></Button>
                 <Button Content="搜索" Width="70" Height="28"></Button>
+                <Button Content="发送" Width="70" Height="28"></Button>
                 <ToolBar.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="#FF6565C2" Offset="0.552" />
-                        <GradientStop Color="#FFB3B3E5" Offset="1" />
-                        <GradientStop Color="Black" Offset="0.023" />
-                        <GradientStop Color="#FFB3B3E5" Offset="0.023" />
+                        <GradientStop Color="#FFE3E6C4" Offset="0.552" />
+                        <GradientStop Color="#FFFDFDFD" Offset="1" />
+                        <GradientStop Color="WhiteSmoke" Offset="0.016" />
                     </LinearGradientBrush>
                 </ToolBar.Background>
             </ToolBar>

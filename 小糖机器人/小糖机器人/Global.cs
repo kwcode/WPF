@@ -18,7 +18,7 @@ namespace QT
         /// 缓存的Cookie
         /// </summary>
         public static string Cookie { get; set; }
-        public static CookieCollection CookieCollection { get; set; }
+        public static CookieCollection CookieCollection = new CookieCollection();
         /// <summary>
         /// 安全参数
         /// </summary>

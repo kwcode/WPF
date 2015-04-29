@@ -25,8 +25,7 @@ namespace QT
 
         public QQHelper()
         {
-            DoLogin_Sig();
-
+            //DoLogin_Sig(); 
         }
         /// <summary>
         /// 获取安全参数 和Cookie 做缓存
@@ -78,6 +77,7 @@ namespace QT
             };
             _Result = _Http.GetHtml(_Item);
             Global.Cookie = Utilities.MergerCookies(Global.Cookie, Utilities.LiteCookies(this._Result.Cookie));
+            Global.CookieCollection.Add(_Result.CookieCollection);
             string code = _Result.Html;
             if (code.Contains("ptui_checkVC('0','"))     //不需要手动输入
             {
@@ -91,6 +91,7 @@ namespace QT
                 Global.VerifySession = v.Replace("'", "");
             }
             msg("新版VerifySession：" + Global.VerifySession);
+            LogsRecord.WriteLog("GetDefaultVC", "新版VerifySession:" + Global.VerifySession, "Cookie:" + Global.Cookie);
             return vccode;
 
         }
@@ -115,6 +116,8 @@ namespace QT
             _Result = _Http.GetHtml(_Item);
             Global.VerifySession = _Result.Cookie.Split(';')[0].Replace("verifysession=", "").Replace("'", "");
             Global.Cookie = Utilities.MergerCookies(Global.Cookie, Utilities.LiteCookies(this._Result.Cookie));
+            Global.CookieCollection.Add(_Result.CookieCollection);
+            LogsRecord.WriteLog("GetByteVCode", "新VerifySession：" + Global.VerifySession, "Cookie:" + Global.Cookie);
             byte[] buff = _Result.ResultByte;
             return buff;
         }
@@ -163,9 +166,11 @@ namespace QT
                 ContentType = "application/x-www-form-urlencoded"
             };
             _Result = this._Http.GetHtml(this._Item);
+            Global.CookieCollection.Add(_Result.CookieCollection);
             Global.Cookie = Utilities.MergerCookies(Global.Cookie, Utilities.LiteCookies(this._Result.Cookie));
             Global.PtWebQQ = Utilities.GetCookieValue(Global.Cookie, "ptwebqq");
             msg("PtWebQQ:登录之前Hash" + Global.PtWebQQ);
+            LogsRecord.WriteLog("Login1:", "新VerifySession:" + Global.VerifySession, "Cookie:" + Global.Cookie, "PtWebQQ:" + Global.PtWebQQ);
 
             Match match = new Regex("ptuiCB\\(\\'(.*)\\',\\'(.*)\\',\\'(.*)\\',\\'(.*)\\',\\'(.*)\\',[\\s]\\'(.*)\\'\\);").Match(this._Result.Html);
             if (match.Groups[1].Value != "0")
@@ -182,8 +187,10 @@ namespace QT
                 ResultCookieType = ResultCookieType.CookieCollection
             };
             this._Result = this._Http.GetHtml(this._Item);
+            Global.CookieCollection.Add(_Result.CookieCollection);
             Global.Cookie = Utilities.MergerCookies(Global.Cookie, Utilities.LiteCookies(this._Result.Cookie));
             Global.CookieCollection = _Result.CookieCollection;
+            LogsRecord.WriteLog("Login2:", "VerifySession:" + Global.VerifySession, "Cookie:" + Global.Cookie, "PtWebQQ:" + Global.PtWebQQ);
             //  GetVfWebqq(Global.PtWebQQ, Global.ClientID);
             if (string.IsNullOrWhiteSpace(Global.PtWebQQ))
             {
@@ -230,7 +237,8 @@ namespace QT
                 Postdata = postdata
             };
             this._Result = this._Http.GetHtml(this._Item);
-          //  Global.Cookie = Utilities.MergerCookies(Global.Cookie, Utilities.LiteCookies(this._Result.Cookie));
+            Global.CookieCollection.Add(_Result.CookieCollection);
+            Global.Cookie = Utilities.MergerCookies(Global.Cookie, Utilities.LiteCookies(this._Result.Cookie));
             if (!this._Result.Html.Contains("\"retcode\":0"))
             {
                 msg(this._Result.Html);
@@ -241,9 +249,11 @@ namespace QT
             {
                 return false;
             }
+            LogsRecord.WriteLog("Channel:", "VerifySession:" + Global.VerifySession, "Cookie:" + Global.Cookie, "PtWebQQ:" + Global.PtWebQQ);
+
             Global.CurrentQQ = userResults;
-            Global.Uin = Utilities.GetMidStr(this._Result.Html, "uin\":", ",");
-            Global.PsessionID = Utilities.GetMidStr(this._Result.Html, "psessionid\":\"", "\",");
+            Global.Uin = userResults.UserResult.Uin.ToString();// Utilities.GetMidStr(this._Result.Html, "uin\":", ",");
+            Global.PsessionID = userResults.UserResult.Psessionid;// Utilities.GetMidStr(this._Result.Html, "psessionid\":\"", "\",");
             Global.Hash = GetHash(Global.Uin, Global.PtWebQQ);
             Global.VfWebQQ = userResults.UserResult.Vfwebqq;
             return true;
@@ -431,6 +441,7 @@ namespace QT
                 ContentType = "application/x-www-form-urlencoded; charset=UTF-8",
                 Referer = "http://d.web2.qq.com/proxy.html?v=20130916001&callback=1&id=2",
                 Cookie = Global.Cookie,
+                CookieCollection = Global.CookieCollection,
                 Method = "POST",
                 Postdata = "r=" + HttpUtility.UrlEncode(postData)
             };

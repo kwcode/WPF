@@ -35,10 +35,12 @@ namespace QT
             img_yzm.MouseDown += new MouseButtonEventHandler(img_yzm_MouseDown);
             txt_QQ.MouseLeave += new MouseEventHandler(txt_QQ_MouseLeave);
             QQ.OnMessagesNoticeEvent += new MessagesNoticeHandler(QQ_OnMessagesNoticeEvent);
+
         }
 
         void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            //  QQ.DoLogin_Sig();
             SetVCode();
         }
         private void QQ_OnMessagesNoticeEvent(object msg)
@@ -116,19 +118,8 @@ namespace QT
 
         private void btn_test_Click(object sender, RoutedEventArgs e)
         {
-            string uin = Global.Uin;// txt_Status.Text;
-            QQ.msg(QQ.GetHash(uin, Global.PtWebQQ));
 
-            //Msg(QQ.GetHash("761607380", "81c6158d4b703b6d5a0cb4bf0b4ec7ada0ae538ed9e69cddff1b7c7c4964e766"));
         }
-
-        private void btn_Friends_Click(object sender, RoutedEventArgs e)
-        {
-            QQ.GetFriendResults();
-            //QQ.GetGroupResults();
-            //QQ.GetVfWebqq("", "");
-        }
-
     }
 
 }

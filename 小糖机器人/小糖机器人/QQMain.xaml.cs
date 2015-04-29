@@ -28,28 +28,23 @@ namespace QT
             this.Loaded += QQMain_Loaded;
             QQ.OnMessagesNoticeEvent += new MessagesNoticeHandler(QQ_OnMessagesNoticeEvent);
             QQ.OnReceiveMessagesEvent += QQ_OnReceiveMessagesEvent;
-            QQ.StartPoll();
-            myMsg.Msg(Global.QQNickName);
         }
 
         void QQMain_Loaded(object sender, RoutedEventArgs e)
         {
-            Global.SysContext.Send(o =>
-            {
-                myMsg.Msg("Cookie:" + Global.Cookie);
-                myMsg.Msg("ClientID:" + Global.ClientID);
-                myMsg.Msg("PtWebQQ:" + Global.PtWebQQ);
-                myMsg.Msg("VfWebQQ:" + Global.VfWebQQ);
-                myMsg.Msg("PsessionID:" + Global.PsessionID);
-            }, null);
+            myMsg.Msg("Cookie:" + Global.Cookie);
+            myMsg.Msg("ClientID:" + Global.ClientID);
+            myMsg.Msg("PtWebQQ:" + Global.PtWebQQ);
+            myMsg.Msg("VfWebQQ:" + Global.VfWebQQ);
+            myMsg.Msg("PsessionID:" + Global.PsessionID);
+            myMsg.Msg("VerifySession:" + Global.VerifySession);
+            QQ.StartPoll();//开始监听
+            myMsg.Msg(Global.QQNickName);
         }
 
         private void QQ_OnMessagesNoticeEvent(object msg)
         {
-            Global.SysContext.Send(o =>
-                                     {
-                                         myMsg.Msg(msg.ToString());
-                                     }, null);
+            myMsg.Msg(msg.ToString());
         }
 
         void QQ_OnReceiveMessagesEvent(string qqNumber, int recode, string pollType, MessageValue msg, string content)
@@ -79,7 +74,8 @@ namespace QT
                     case "message":
                         {
                             string uid = msg.FromUin.ToString();
-                            b = QQ.SendMsgToFriend(uid, QQ.Ask(content));
+                            string ask = "你的信息已经收到！";//QQ.Ask(content)
+                            b = QQ.SendMsgToFriend(uid, ask);
                             break;
                         }
                     case "sess_message":
