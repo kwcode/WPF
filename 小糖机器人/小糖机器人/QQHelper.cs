@@ -249,13 +249,14 @@ namespace QT
             {
                 return false;
             }
-            LogsRecord.WriteLog("Channel:", "VerifySession:" + Global.VerifySession, "Cookie:" + Global.Cookie, "PtWebQQ:" + Global.PtWebQQ);
+
 
             Global.CurrentQQ = userResults;
             Global.Uin = userResults.UserResult.Uin.ToString();// Utilities.GetMidStr(this._Result.Html, "uin\":", ",");
             Global.PsessionID = userResults.UserResult.Psessionid;// Utilities.GetMidStr(this._Result.Html, "psessionid\":\"", "\",");
             Global.Hash = GetHash(Global.Uin, Global.PtWebQQ);
             Global.VfWebQQ = userResults.UserResult.Vfwebqq;
+            LogsRecord.WriteLog("Channel:", "VerifySession:" + Global.VerifySession, "Cookie:" + Global.Cookie, "PtWebQQ:" + Global.PtWebQQ, "VfWebQQ:" + Global.VfWebQQ, "PsessionID:" + Global.PsessionID);
             return true;
         }
         public bool GetVfWebqq(string ptwebqq, string clientid)
@@ -341,6 +342,7 @@ namespace QT
                                 jArray = (current.MessageValue.Content as JArray);
                                 if (jArray != null)
                                 {
+                                    LogsRecord.WriteLog("Poll监听到:", "Html:" + this._Result.Html, "Cookie:" + Global.Cookie);
                                     ReceiveMessages(Global.Uin, messageResults.Retcode, current.PollType, current.MessageValue, jArray[1].ToString());
 
                                 }
@@ -446,6 +448,8 @@ namespace QT
                 Postdata = "r=" + HttpUtility.UrlEncode(postData)
             };
             this._Result = this._Http.GetHtml(this._Item);
+
+            LogsRecord.WriteLog("SendMsg发送信息:", "postData:" + postData, "Cookie:"+Global.Cookie);
             return this._Result.Html != null && this._Result.Html.Contains("retcode\":0");
         }
         public string Ask(string content)

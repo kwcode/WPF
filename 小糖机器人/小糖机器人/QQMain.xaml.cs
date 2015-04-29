@@ -39,12 +39,16 @@ namespace QT
             myMsg.Msg("PsessionID:" + Global.PsessionID);
             myMsg.Msg("VerifySession:" + Global.VerifySession);
             QQ.StartPoll();//开始监听
+
             myMsg.Msg(Global.QQNickName);
         }
 
         private void QQ_OnMessagesNoticeEvent(object msg)
         {
-            myMsg.Msg(msg.ToString());
+            Global.SysContext.Send(o =>
+            {
+                myMsg.Msg(msg.ToString());
+            }, null);
         }
 
         void QQ_OnReceiveMessagesEvent(string qqNumber, int recode, string pollType, MessageValue msg, string content)
