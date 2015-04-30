@@ -53,7 +53,7 @@ namespace QT
 
         void QQ_OnReceiveMessagesEvent(string qqNumber, int recode, string pollType, MessageValue msg, string content)
         {
-            QQ.msg("收到" + qqNumber + "的消息:" + content);
+            QQ.msg("收到" + msg.FromUin + "的消息:" + content);
             try
             {
                 this.Write(string.Concat(new object[]
@@ -68,6 +68,7 @@ namespace QT
 				}));
                 string pollType2 = pollType;
                 bool b = true;
+                string _msg = "";
                 switch (pollType2)
                 {
                     case "kick_message":
@@ -78,8 +79,13 @@ namespace QT
                     case "message":
                         {
                             string uid = msg.FromUin.ToString();
-                            string ask = "你的信息已经收到！";//QQ.Ask(content)
+                            string ask = QQ.Ask(content);
                             b = QQ.SendMsgToFriend(uid, ask);
+                            if (b)
+                            {
+                                QQ.msg("成功回复" + uid + "的信息【" + ask + "】");
+                            }
+                            _msg = "回复" + uid + "的信息【" + ask + "】";
                             break;
                         }
                     case "sess_message":
@@ -97,13 +103,14 @@ namespace QT
                     case "discu_message":
                         {
                             string uid = msg.DiscuID.ToString();
-                            b = QQ.SendMsgToDiscu(uid, QQ.Ask(content));
+                            string ask = "@" + msg.FromUin + "讨论组信息信息已经收到！";//QQ.Ask(content) 
+                            b = QQ.SendMsgToDiscu(uid, ask);
                             break;
                         }
                 }
                 if (!b)
                 {
-                    QQ.msg("机器人发送失败了！");
+                    QQ.msg("机器人发送失败了！" + _msg);
                 }
             }
             catch (Exception ex)
@@ -143,10 +150,29 @@ namespace QT
             , null);
         }
 
+        FriendResults _FriendResults = null;
 
         private void btn_Seting_Click(object sender, RoutedEventArgs e)
         {
-            QQ.GetFriendResults();
+            _FriendResults = QQ.GetFriendResults();
+            string json = JsonHelper.SerializeObject(_FriendResults);
+            QQ.msg(json);
+        }
+
+        private void btn_send_Click(object sender, RoutedEventArgs e)
+        {
+            if (_FriendResults != null)
+            {
+                bool b = QQ.SendMsgToFriend(_FriendResults.FriendResult.Info[0].Uin.ToString(), "主动发送信息");
+
+            }
+            else
+                QQ.msg("_FriendResults为空");
+        }
+
+        private void btn_search_Click(object sender, RoutedEventArgs e)
+        {
+            Global.Cookie = txt_postdata.Text;
         }
     }
 }

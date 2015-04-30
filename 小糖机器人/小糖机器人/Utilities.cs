@@ -228,7 +228,7 @@ namespace QT
             try
             {
                 string text = "";
-                Cookies = Cookies.Replace("HttpOnly", "").Replace(";", "; ");
+                Cookies = Cookies.Replace("HttpOnly", "").Replace(";", "; ").Replace(",", "");
                 Regex regex = new Regex("(?<=,|^)(?<cookie>[^ ]+=[\\s|\"]?(?![\"]?deleted[\"]?)[^;]+)[\"]?;");
                 Match match = regex.Match(Cookies);
                 while (match.Success)
@@ -245,6 +245,28 @@ namespace QT
             catch
             {
                 result = "";
+            }
+            return result;
+        }
+        public static string FilterCookies(string Cookies)
+        {
+            string result = "";
+            if (!string.IsNullOrEmpty(Cookies))
+            {
+                List<string> list = new List<string>();
+                string[] spcookies = Cookies.Replace(",", "").Split(';');
+                foreach (string item in spcookies)
+                {
+                    if (!string.IsNullOrEmpty(item))
+                    {
+                        string[] a = item.Split('=');
+                        if (!string.IsNullOrEmpty(a[1]) && !a[1].Equals("/"))
+                        {
+                            list.Add(item);
+                        }
+                    }
+                }
+                result = string.Join(";", list.ToArray());
             }
             return result;
         }
@@ -302,6 +324,7 @@ namespace QT
             }
             return result;
         }
+
         public static string StripHTML(string stringToStrip)
         {
             stringToStrip = Regex.Replace(stringToStrip, "</p(?:\\s*)>(?:\\s*)<p(?:\\s*)>", "\n\n", RegexOptions.IgnoreCase | RegexOptions.Compiled);
