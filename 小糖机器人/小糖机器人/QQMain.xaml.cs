@@ -79,7 +79,7 @@ namespace QT
                     case "message":
                         {
                             string uid = msg.FromUin.ToString();
-                            string ask = QQ.Ask(content);
+                            string ask = QT.ChatAPI.AskYunTu(content).text;//QQ.Ask(content);
                             b = QQ.SendMsgToFriend(uid, ask);
                             if (b)
                             {
@@ -103,7 +103,7 @@ namespace QT
                     case "discu_message":
                         {
                             string uid = msg.DiscuID.ToString();
-                            string ask = "@" + msg.FromUin + "讨论组信息信息已经收到！";//QQ.Ask(content) 
+                            string ask = QQ.Ask(content);
                             b = QQ.SendMsgToDiscu(uid, ask);
                             break;
                         }

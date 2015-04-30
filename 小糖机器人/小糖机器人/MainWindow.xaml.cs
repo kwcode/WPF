@@ -118,7 +118,7 @@ namespace QT
 
         private void btn_test_Click(object sender, RoutedEventArgs e)
         {
-
+            YunTuResult txt = QT.ChatAPI.AskYunTu("你好");
         }
     }
 
