@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Security.Cryptography;
- 
+
 
 namespace QT
 {
     public class QQMd5
     {
+        #region 旧版的QQ登录方式======================
 
         public static string EncryptOld(string password, string verifyCode)
         {
@@ -101,7 +102,12 @@ namespace QT
             string str = QQMd5.smethod_1(s);
             return QQMd5.smethod_0(str + verifyCode.ToUpper());
         }
-          
+
+        #endregion
+
+        #region 新版======================
+
+        #endregion
     }
 
 

@@ -27,36 +27,36 @@ namespace QT
         {
             //DoLogin_Sig(); 
         }
-        /// <summary>
-        /// 获取安全参数 和Cookie 做缓存
-        /// http://w.qq.com/页面中
-        /// iframe页面中获得 注意编码 &
-        /// 方式 在新的窗口打开 复制地址栏
-        /// </summary>
-        /// <returns></returns>
-        public void DoLogin_Sig()
-        {
-            try
-            {
-                this._Item = new HttpItem
-                {
-                    URL = "https://ui.ptlogin2.qq.com/cgi-bin/login?daid=164&target=self&style=16&mibao_css=m_webqq&appid=501004106&enable_qlogin=0&no_verifyimg=1&s_url=http%3A%2F%2Fw.qq.com%2Fproxy.html&f_url=loginerroralert&strong_login=1&login_state=10&t=20131024001",
-                    Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-                    Referer = "http://w.qq.com/",
-                    UserAgent = this._UserAgent,
-                    Timeout = Global.TimeOut
-                };
+        ///// <summary>
+        ///// 获取安全参数 和Cookie 做缓存
+        ///// http://w.qq.com/页面中
+        ///// iframe页面中获得 注意编码 &
+        ///// 方式 在新的窗口打开 复制地址栏
+        ///// </summary>
+        ///// <returns></returns>
+        //public void DoLogin_Sig()
+        //{
+        //    try
+        //    {
+        //        this._Item = new HttpItem
+        //        {
+        //            URL = "https://ui.ptlogin2.qq.com/cgi-bin/login?daid=164&target=self&style=16&mibao_css=m_webqq&appid=501004106&enable_qlogin=0&no_verifyimg=1&s_url=http%3A%2F%2Fw.qq.com%2Fproxy.html&f_url=loginerroralert&strong_login=1&login_state=10&t=20131024001",
+        //            Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        //            Referer = "http://w.qq.com/",
+        //            UserAgent = this._UserAgent,
+        //            Timeout = Global.TimeOut
+        //        };
 
-                this._Result = this._Http.GetHtml(this._Item);
-                Global.Cookie = Utilities.LiteCookies(this._Result.Cookie);
-                Global.Login_Sig = Utilities.GetMidStr(this._Result.Html, "g_login_sig=encodeURIComponent\\(\\\"(?<value>.*?)\\\"\\)", 1);
+        //        this._Result = this._Http.GetHtml(this._Item);
+        //        Global.Cookie = Utilities.LiteCookies(this._Result.Cookie);
+        //        Global.Login_Sig = Utilities.GetMidStr(this._Result.Html, "g_login_sig=encodeURIComponent\\(\\\"(?<value>.*?)\\\"\\)", 1);
 
-            }
-            catch (Exception ex)
-            {
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-            }
-        }
+        //    }
+        //}
 
         #region 登录相关==========================================================
         /// <summary>

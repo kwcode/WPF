@@ -91,13 +91,34 @@ namespace QT
                     case "sess_message":
                         {
                             string uid = msg.FromUin.ToString();
-                            b = QQ.SendMsgToSess(uid, QQ.Ask(content));
+                            b = QQ.SendMsgToSess(uid, QT.ChatAPI.AskYunTu(content).text);// QQ.Ask(content)
                             break;
                         }
                     case "group_message":
                         {
                             string uid = msg.FromUin.ToString();
-                            b = QQ.SendMsgToGroup(uid, QQ.Ask(content));
+                            //只回复 前面有# 小糖 xt x的
+                            string xt = content.Substring(0, 1);
+                            if (xt == "#")
+                            {
+                                content = content.Replace(xt, "").Trim();
+                            }
+                            else
+                            {
+                                string jq = content.Substring(0, 2);
+                                if (jq.Contains("小糖") || jq.Contains("xt") || jq.Contains("x"))
+                                {
+                                    content = "";
+                                    QQ.msg("只回复 小糖为前缀的！");
+                                    b = QQ.SendMsgToGroup(uid, "群消息,小糖只回复前缀 # 的哦! 如:(#你好)");//QQ.Ask(content)
+                                    break;
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+                            b = QQ.SendMsgToGroup(uid, QT.ChatAPI.AskYunTu(content).text);//QQ.Ask(content)
                             break;
                         }
                     case "discu_message":
