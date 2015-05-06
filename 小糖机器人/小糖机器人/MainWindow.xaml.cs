@@ -32,17 +32,25 @@ namespace QT
             InitializeComponent();
             yiwoSDK.CFun.I_LOVE_BBS("yiwowang.com");
             this.Loaded += MainWindow_Loaded;
-            img_yzm.MouseDown += new MouseButtonEventHandler(img_yzm_MouseDown);
-            txt_QQ.MouseLeave += new MouseEventHandler(txt_QQ_MouseLeave);
-            QQ.OnMessagesNoticeEvent += new MessagesNoticeHandler(QQ_OnMessagesNoticeEvent);
 
         }
 
         void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            //  QQ.DoLogin_Sig();
-            SetVCode();
+            img_yzm.MouseDown += new MouseButtonEventHandler(img_yzm_MouseDown);
+            txt_QQ.MouseLeave += new MouseEventHandler(txt_QQ_MouseLeave);
+            QQ.OnMessagesNoticeEvent += new MessagesNoticeHandler(QQ_OnMessagesNoticeEvent);
+            InitLoad();
+            if (!string.IsNullOrEmpty(txt_QQ.Text) && !string.IsNullOrEmpty(txt_Pwd.Password))
+                SetVCode();//设置验证码 
         }
+        //初始化加载
+        private void InitLoad()
+        {
+
+        }
+
+
         private void QQ_OnMessagesNoticeEvent(object msg)
         {
             Msg(msg.ToString());
@@ -53,12 +61,15 @@ namespace QT
         /// <param name="msg"></param>
         public void Msg(string msg)
         {
+            //Global.SysContext.Send(o =>
+            //{
+            //    txt_msg.Text += DateTime.Now.ToString("yyyy-MM-dd HH:mm") + ": " + msg + "\n";
+            //    txt_msg.ScrollToEnd();
+            //}, null);
             Global.SysContext.Send(o =>
             {
-                txt_msg.Text += DateTime.Now.ToString("yyyy-MM-dd HH:mm") + ": " + msg + "\n";
-                txt_msg.ScrollToEnd();
+                txt_msg.Text = msg;
             }, null);
-
         }
         void txt_QQ_MouseLeave(object sender, MouseEventArgs e)
         {
@@ -97,21 +108,31 @@ namespace QT
         }
         private void btn_login_Click(object sender, RoutedEventArgs e)
         {
-            bool b = QQ.Login(txt_QQ.Text, txt_Pwd.Text, txt_vCode.Text);
+            string qq = txt_QQ.Text;
+            string pwd = txt_Pwd.Password;
+            if (string.IsNullOrEmpty(qq))
+            {
+                QQ.msg("请输入QQ帐号");
+                return;
+            }
+            if (string.IsNullOrEmpty(pwd))
+            {
+                QQ.msg("请输入QQ密码");
+                return;
+            }
+            QQ.msg("正在登录。。。。");
+            bool b = QQ.Login(qq, pwd, txt_vCode.Text);
             if (b)
             {
-                QQ.msg("登录成功\n");
-                img_yzm.MouseDown -= new MouseButtonEventHandler(img_yzm_MouseDown);
-                txt_QQ.MouseLeave -= new MouseEventHandler(txt_QQ_MouseLeave);
-                img_yzm.Visibility = Visibility.Collapsed;
+                QQ.msg("登录成功");
+                this.Hide();
                 QQMain win = new QQMain();
                 win.Show();
-                this.Hide();
                 this.Close();
             }
             else
             {
-                QQ.msg("登录失败\n");
+                QQ.msg("登录失败");
                 SetVCode();
             }
         }
@@ -119,6 +140,12 @@ namespace QT
         private void btn_test_Click(object sender, RoutedEventArgs e)
         {
             YunTuResult txt = QT.ChatAPI.AskYunTu("你好");
+        }
+
+        private void btn_cancel_Click(object sender, RoutedEventArgs e)
+        {
+            QQ.msg("正在关闭。。。");
+            this.Close();
         }
     }
 
