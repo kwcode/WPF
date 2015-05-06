@@ -72,5 +72,7 @@ namespace QT
         public static UserResults CurrentQQ { get; set; }
         #endregion
 
+
+        public static string CapCd { get; set; }
     }
 }

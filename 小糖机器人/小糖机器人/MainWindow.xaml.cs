@@ -29,8 +29,7 @@ namespace QT
         public string _QQNumber { get; set; }
         public MainWindow()
         {
-            InitializeComponent();
-            yiwoSDK.CFun.I_LOVE_BBS("yiwowang.com");
+            InitializeComponent(); 
             this.Loaded += MainWindow_Loaded;
 
         }
