@@ -156,7 +156,7 @@ namespace QT
         public bool Login(string qqumber, string password, string vcode)
         {
 
-            string aa = yiwoSDK.CQQHelper.getNewP(password, Convert.ToInt32(qqumber), vcode.ToUpper());
+            string aa = QQMd5.getNewP(password, Convert.ToInt32(qqumber), vcode.ToUpper());
 
             string url = string.Format("https://ssl.ptlogin2.qq.com/login?u={0}&p={1}&verifycode={2}&webqq_type=10&remember_uin=1&login2qq=1&aid=501004106&u1=http%3A%2F%2Fw.qq.com%2Fproxy.html%3Flogin2qq%3D1%26webqq_type%3D10&h=1&ptredirect=0&ptlang=2052&daid=164&from_ui=1&pttype=1&dumy=&fp=loginerroralert&action=0-18-11874&mibao_css=m_webqq&t=1&g=1&js_type=0&js_ver=10114&login_sig=-aXo*5jnbbqIR-*F-7Pob2NDe72gcQ-5JktpqDo8rvDYyBHQbvYGoGi0x18dxKrZ&pt_randsalt=0&pt_vcode_v1=0&pt_verifysession_v1={3}", qqumber, aa, vcode.ToUpper(), Global.VerifySession);
             this._Item = new HttpItem
@@ -262,7 +262,7 @@ namespace QT
             Global.Uin = userResults.UserResult.Uin.ToString();// Utilities.GetMidStr(this._Result.Html, "uin\":", ",");
             Global.PsessionID = userResults.UserResult.Psessionid;// Utilities.GetMidStr(this._Result.Html, "psessionid\":\"", "\",");
             //   Global.Hash = GetHash(Global.Uin, Global.PtWebQQ);
-            Global.Hash = yiwoSDK.CQQHelper.getNewHash(Global.Uin, Global.PtWebQQ);
+            Global.Hash = QQMd5.getNewHash(Global.Uin, Global.PtWebQQ);
             Global.VfWebQQ = userResults.UserResult.Vfwebqq;
             LogsRecord.WriteLog("Channel:", "VerifySession:" + Global.VerifySession, "Cookie:" + Global.Cookie, "PtWebQQ:" + Global.PtWebQQ, "VfWebQQ:" + Global.VfWebQQ, "PsessionID:" + Global.PsessionID);
             return true;
