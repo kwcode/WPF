@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Security.Cryptography;
+using System.IO;
 
 
 namespace QT
@@ -106,7 +107,76 @@ namespace QT
         #endregion
 
         #region 新版======================
+        public static string getNewP(string password, long uin, string vcode)
+        {
+            string hexString = byte2HexString(long2bytes(uin)).ToLower();
+            string fun = string.Format(@"getPassword('{0}','{1}','{2}')", password, hexString, vcode);
+            return ExecuteScript(fun);
+        }
+        public static String byte2HexString(byte[] b)
+        {
 
+            string ss = "";
+            char[] hex = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8',
+                '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+            if (b == null)
+                return "null";
+
+            int offset = 0;
+            int len = b.Length;
+
+            // 检查索引范围
+            int end = offset + len;
+            if (end > b.Length)
+                end = b.Length;
+
+
+            for (int i = offset; i < end; i++)
+            {
+                ss += "" + hex[(b[i] & 0xF0) >> 4] + "" + hex[b[i] & 0xF];
+            }
+            return ss;
+        }
+        public static byte[] long2bytes(long i)
+        {
+            byte[] b = new byte[8];
+            for (int m = 0; m < 8; m++, i >>= 8)
+            {
+                b[7 - m] = (byte)(i & 0x000000FF);
+
+            }
+            return b;
+        }
+        /// <summary>
+        /// 执行JS
+        /// </summary>
+        /// <param name="sExpression">参数体</param>
+        /// <param name="sCode">JavaScript代码的字符串</param>
+        /// <returns></returns>
+        public static string ExecuteScript(string sExpression)
+        {
+            string path = AppDomain.CurrentDomain.BaseDirectory + "mq_comm.js";
+            string sCode = File.ReadAllText(path);
+            MSScriptControl.ScriptControl scriptControl = new MSScriptControl.ScriptControl();
+            scriptControl.UseSafeSubset = false;
+            scriptControl.Language = "JavaScript";
+            scriptControl.AddCode(sCode);
+            try
+            {
+                string str = scriptControl.Eval(sExpression).ToString();
+                return str;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+
+        }
+        public static string getNewHash(string uin, string ptwebqq)
+        {
+            string fun = string.Format(@"hash('{0}','{1}')", uin, ptwebqq);
+            return ExecuteScript(fun);
+        }
         #endregion
     }
 
