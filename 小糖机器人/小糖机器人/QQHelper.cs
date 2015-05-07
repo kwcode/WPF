@@ -91,7 +91,7 @@ namespace QT
                 string v = code.Split(',')[1];
                 Global.VerifySession = v.Replace("'", "");
             }
-            msg("新版VerifySession：" + Global.VerifySession);
+            // msg("新版VerifySession：" + Global.VerifySession);
             LogsRecord.WriteLog("GetDefaultVC", "新版VerifySession:" + Global.VerifySession, "Cookie:" + Global.Cookie);
             return vccode;
 
@@ -170,11 +170,9 @@ namespace QT
             };
             _Result = this._Http.GetHtml(this._Item);
             Global.CookieCollection.Add(_Result.CookieCollection);
-            //   Global.Cookie = this._Result.Cookie;
             Global.Cookie = Utilities.MergerCookies(Global.Cookie, Utilities.FilterCookies(this._Result.Cookie));
-            // Global.Cookie = Utilities.MergerCookies(Global.Cookie, this._Result.Cookie);
             Global.PtWebQQ = Utilities.GetCookieValue(Global.Cookie, "ptwebqq");
-            msg("PtWebQQ:登录之前Hash" + Global.PtWebQQ);
+            //msg("PtWebQQ:登录之前Hash" + Global.PtWebQQ);
             LogsRecord.WriteLog("Login1:", "新VerifySession:" + Global.VerifySession, "Cookie:" + Global.Cookie, "PtWebQQ:" + Global.PtWebQQ);
 
             Match match = new Regex("ptuiCB\\(\\'(.*)\\',\\'(.*)\\',\\'(.*)\\',\\'(.*)\\',\\'(.*)\\',[\\s]\\'(.*)\\'\\);").Match(this._Result.Html);

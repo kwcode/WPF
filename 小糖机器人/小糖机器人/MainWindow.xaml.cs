@@ -131,7 +131,7 @@ namespace QT
             }
             else
             {
-                QQ.msg("登录失败");
+                //QQ.msg("登录失败");
                 SetVCode();
             }
         }
