@@ -4,6 +4,6 @@ Interop.MSScriptControl 微软提供的  执行js 代码
 SysCore 忘记了
 
 HttpHelper:提供HTTP 请求的相关方法
-
+Newtonsoft.Json 转换JSON方法
 
 
