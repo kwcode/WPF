@@ -40,15 +40,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BaseApiCommon">
-      <HintPath>..\..\..\..\lib\trunk\common\BaseApiCommon.dll</HintPath>
+      <HintPath>..\..\WPF\trunk\lib\BaseApiCommon.dll</HintPath>
     </Reference>
-    <Reference Include="HttpHelper, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\HttpHelper.dll</HintPath>
+    <Reference Include="HttpHelper">
+      <HintPath>..\..\WPF\trunk\lib\HttpHelper.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Interop.MSScriptControl">
+      <HintPath>..\..\WPF\trunk\lib\Interop.MSScriptControl.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\WPF\trunk\lib\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -69,6 +71,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ByteBuffer.cs" />
+    <Compile Include="ChatAPI.cs" />
     <Compile Include="LogsRecord.cs" />
     <Compile Include="MessageProc.cs" />
     <Compile Include="Model\Discus\DiscusResult.cs" />
@@ -149,16 +152,6 @@
   <ItemGroup>
     <Resource Include="20141112095245956_easyicon_net_72.ico" />
     <Resource Include="20141112095248704_easyicon_net_72.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\HuaBanCollect\CsharpHttpHelper\CsharpHttpHelper.csproj">
-      <Project>{966C2F8B-47E5-4E6D-ABFC-13501E739D25}</Project>
-      <Name>CsharpHttpHelper</Name>
-    </ProjectReference>
-    <ProjectReference Include="C:\Users\tuoling04\Desktop\TKW\yiwoSDK2.8.1源码\yiwoSDK2.8.1源码\SRC\yiwoSDK.csproj">
-      <Project>{8bd792bc-2316-4de5-8b36-e591029a22b1}</Project>
-      <Name>yiwoSDK</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
