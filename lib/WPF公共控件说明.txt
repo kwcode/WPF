@@ -1,0 +1,9 @@
+BaseApiCommon 提供的一些基本的方法
+DBCommon 数据库连接方面的方法
+Interop.MSScriptControl 微软提供的  执行js 代码
+SysCore 忘记了
+
+HttpHelper:提供HTTP 请求的相关方法
+
+
+

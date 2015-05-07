@@ -1,0 +1,187 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DBCommon</name>
+    </assembly>
+    <members>
+        <member name="F:DBCommon.DataClass.ExecTimeOut">
+            <summary>
+             等待命令执行的时间（以秒为单位）。默认值为 30 秒。
+            </summary>
+        </member>
+        <member name="F:DBCommon.DataClass.OutputValues">
+            <summary>
+            获取 output 值, 本属性在执行非常频繁时存在线程污染错误, 请使用 out 重载代替
+            </summary>
+        </member>
+        <member name="F:DBCommon.DataClass._SPParametersCache">
+            <summary>
+            存储过程参数缓存
+            </summary>
+        </member>
+        <member name="M:DBCommon.DataClass.ExecuteDataTable(System.String,System.Object[])">
+            <summary>
+            执行存储过程，返回DataTable。
+            (TableName = "yes" 表示执行成功，
+            否则 TableName 为错误信息)
+            </summary>
+            <param name="storedProcedureName">存储过程名字</param>
+            <param name="paraValues">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBCommon.DataClass.ExecuteDataTable(System.String,System.Collections.Hashtable@,System.Object[])">
+            <summary>
+            执行存储过程，返回DataTable。
+            (TableName = "yes" 表示执行成功，
+            否则 TableName 为错误信息)
+            </summary>
+            <param name="storedProcedureName">存储过程名字</param>
+            <param name="outputValues">out 集合</param>
+            <param name="paraValues">参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBCommon.DataClass.ExecuteNonQuery(System.String,System.Object[])">
+            <summary>
+             执行存储过程 
+            </summary> 
+            <returns>影响行数</returns>
+        </member>
+        <member name="M:DBCommon.DataClass.OpenConn(System.Boolean)">
+            <summary>
+            打开数据连接连接
+            </summary>
+            <param name="needReConn"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DBCommon.DataClass.CloseConn">
+            <summary>
+            关闭连接
+            </summary>
+        </member>
+        <member name="M:DBCommon.DataClass.CreateSqlCommand(System.Data.SqlClient.SqlConnection,System.String)">
+            <summary>
+            创建对Sql-执行对象
+            </summary>
+            <param name="connection"></param>
+            <param name="storedProcedureName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DBCommon.DataClass.DeriveParameters(System.Data.SqlClient.SqlCommand,System.String)">
+            <summary>
+            检索sqlCommand 中的参数添加到sqlCommand.Parameters 中
+            </summary>
+            <param name="sqlCommand"></param>
+            <param name="storedProcedureName">储存过程名字</param>
+        </member>
+        <member name="M:DBCommon.DataClass.AssignParameterValues(System.Data.SqlClient.SqlCommand,System.String,System.Object[])">
+            <summary>
+            1、检查参数
+            2、填充对应的参数
+            3、判断存储过程返回值参数
+            
+            </summary>
+            <param name="sqlCommand"></param>
+            <param name="storedProcedureName"></param>
+            <param name="paraValues"></param>
+            <returns>存储过程是否有返回值参数</returns>
+        </member>
+        <member name="M:DBCommon.DataClass.SetOutputValues(System.Data.SqlClient.SqlCommand)">
+            <summary>
+            设置 out 参数返回集合
+            </summary>
+            <param name="sqlCommand"></param>
+            <returns></returns>
+        </member>
+        <member name="P:DBCommon.DataClass.needReConnect">
+            <summary>
+            是否需要打开连接
+            </summary>
+        </member>
+        <member name="T:DBCommon.DataPool">
+            <summary>
+            数据连接池
+            </summary>
+        </member>
+        <member name="F:DBCommon.DataPool.WaitFor">
+            <summary>
+             连接池等待时间(ms), 默认值为 20000
+            </summary>
+        </member>
+        <member name="F:DBCommon.DataPool._semap">
+            <summary>
+            信号量的初始请求数
+            </summary>
+        </member>
+        <member name="F:DBCommon.DataPool.dataConnPool">
+            <summary>
+            数据连接池
+            </summary>
+        </member>
+        <member name="M:DBCommon.DataPool.Push(DBCommon.DataClass)">
+            <summary>
+            将数据连接对象存入池
+            </summary>
+            <param name="dc">数据连接对象</param>
+        </member>
+        <member name="M:DBCommon.DataPool.GetDataClass">
+            <summary>
+            得到一个 DataClass 对象
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DBCommon.DataPool.#ctor(System.Int32,System.String)">
+            <summary>
+            初始化数据池对象
+            </summary>
+            <param name="capacity">池大小</param>
+            <param name="connString">数据库连接字符串</param>
+        </member>
+        <member name="M:DBCommon.DataPool.ExecuteDataTable(System.String,System.Object[])">
+            <summary>
+            执行存储过程,
+            
+            </summary>
+            <param name="storedProcedureName">存储过程</param>
+            <param name="paraValues">参数</param>
+            <returns>返回 System.Data.DataTable。
+            (TableName = "yes" 表示执行成功，
+            否则 TableName 为错误信息)</returns>
+        </member>
+        <member name="M:DBCommon.DataPool.ExecuteSP(System.String,System.Object[])">
+            <summary>
+            执行存储过程
+            </summary> 
+            <returns>影响行数</returns>
+        </member>
+        <member name="M:DBCommon.DataPool.ExecuteSP(System.String,System.Collections.Hashtable@,System.Object[])">
+            <summary>
+            执行存储过程
+            </summary> 
+            <returns>影响行数</returns>
+        </member>
+        <member name="M:DBCommon.DataPool.ExecuteDataTables(System.String,System.Object[])">
+            <summary>
+            执行存储过程，返回 System.Data.DataTable[]
+            </summary>
+            <param name="storedProcedureName">SP name</param>
+            <param name="paraValues">Params</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBCommon.DataPool.ExecuteDataTables(System.String,System.Collections.Hashtable@,System.Object[])">
+            <summary>
+            执行存储过程，返回 System.Data.DataTable[]
+            </summary>
+            <param name="storedProcedureName">SP name</param>
+            <param name="paraValues">Params</param>
+            <returns></returns>
+        </member>
+        <member name="M:DBCommon.DataPool.ExecuteSQL(System.String,System.Object[])">
+            <summary>
+            执行sql语句返回影响行数
+            </summary>
+            <param name="sqlstr"></param>
+            <param name="values"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
