@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Configuration>
+  <Parameter value=""></Parameter>
+  <SelectedIndex value=""></SelectedIndex>
+  <ServiceUrl value="http://192.168.81.202/mssql"></ServiceUrl>
+
+  <UserID value="tkw"></UserID>
+  <Password value="1111"></Password>
+  <AutoLogin value="0"></AutoLogin>
+  <!--用户自己配置。-->
+  <Dlls>
+    <Dll value="UserManager.dll"></Dll>
+
+
+  </Dlls>
+</Configuration>
