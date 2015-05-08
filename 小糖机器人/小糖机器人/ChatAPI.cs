@@ -60,8 +60,51 @@ namespace QT
     public class YunTuResult
     {
         //{"code":100000,"text":"很高兴和你聊天"} 
+        /// <summary>
+        ///code: 100000 [text]
+        ///code: 200000 [text url]
+        ///code: 302000 [text list[article source detailurl icon] ]
+        ///code: 305000 [text list[trainnum start terminal starttime endtime detailurl icon]]
+        ///code: 306000 [text list[flight route starttime endtime state detailurl icon]]
+        ///code: 308000 [text list[name info detailurl icon]] 
+        /// </summary>
         public int code { get; set; }
         public string text { get; set; }
+        public string url { get; set; }
+        public string[] list { get; set; }
+    }
+    public class YunTuItem
+    {
+        #region 新闻
+        public string article { get; set; }
+        public string source { get; set; }
+
+
+        #endregion
+
+        #region 列车
+        public string trainnum { get; set; }
+        public string terminal { get; set; }
+        #endregion
+
+        #region 航班
+        public string flight { get; set; }
+        public string route { get; set; }
+
+        public string state { get; set; }
+        #endregion
+
+        #region 菜谱
+        public string name { get; set; }
+        public string info { get; set; }
+        #endregion
+        public string start { get; set; }
+        public string starttime { get; set; }
+        public string endtime { get; set; }
+
+        public string detailurl { get; set; }
+        public string icon { get; set; }
+
     }
 
 }
