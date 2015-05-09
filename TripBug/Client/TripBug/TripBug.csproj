@@ -126,15 +126,15 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BugService\BugServiceInterface.csproj">
-      <Project>{6ec2324b-28cf-4381-b3db-da4bd0e26c8b}</Project>
-      <Name>BugServiceInterface</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="UserConfig.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Comm\BugServiceInterface\BugServiceInterface.csproj">
+      <Project>{6ec2324b-28cf-4381-b3db-da4bd0e26c8b}</Project>
+      <Name>BugServiceInterface</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

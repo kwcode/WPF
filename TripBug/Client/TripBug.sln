@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TripBug", "TripBug\TripBug.csproj", "{AD55BDCA-87EA-469E-8A75-67EA370C8874}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BugServiceInterface", "BugService\BugServiceInterface.csproj", "{6EC2324B-28CF-4381-B3DB-DA4BD0E26C8B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BugServiceInterface", "..\Comm\BugServiceInterface\BugServiceInterface.csproj", "{6EC2324B-28CF-4381-B3DB-DA4BD0E26C8B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
