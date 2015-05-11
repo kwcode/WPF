@@ -25,7 +25,9 @@ namespace Trip
 
             List<BugEntity> list = new List<BugEntity>();
             list.Add(new BugEntity() { ID = "1", Author = "tkw", CreateTS = DateTime.Now.ToString() });
+            list.Add(new BugEntity() { ID = "1", Author = "tkw", CreateTS = DateTime.Now.ToString() });
             lv_data.ItemsSource = list;
+            dg_data.ItemsSource = list;
         }
         private void SortClick(object sender, RoutedEventArgs e)
         {

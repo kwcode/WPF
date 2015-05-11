@@ -6,8 +6,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <ListView>
-
-        </ListView>
+        <TextBox Text="1111111111"></TextBox>
     </Grid>
 </UserControl>

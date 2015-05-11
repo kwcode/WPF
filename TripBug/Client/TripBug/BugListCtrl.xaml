@@ -53,15 +53,15 @@
             <!--<Button Content="搜索"></Button>-->
         </Grid>
         <GridSplitter Height="4" Grid.Row="1" Background="AliceBlue" Margin="1"    HorizontalAlignment="Stretch" ></GridSplitter>
-        <Grid Grid.Row="2"  Background="AliceBlue"> 
-                <ListView ScrollViewer.CanContentScroll="True"  ScrollViewer.HorizontalScrollBarVisibility="Auto"  x:Name="lv_data"  ItemContainerStyle="{StaticResource lvstyle1}" >
-                    <ListView.View>
-                        <GridView  > 
-                            <GridView.Columns >
-                                <GridViewColumn   Width="100"   DisplayMemberBinding="{Binding Path=ID, Mode=TwoWay}" >
-                                    <GridViewColumnHeader Click="SortClick" x:Name="ID" Tag="ID"   Content="编码" />
-                                </GridViewColumn>
-                                <!--<GridViewColumn   Header="图片" Width="100"    >
+        <Grid Grid.Row="2"  Background="AliceBlue">
+            <ListView ScrollViewer.CanContentScroll="True"  ScrollViewer.HorizontalScrollBarVisibility="Auto"  x:Name="lv_data"  ItemContainerStyle="{StaticResource lvstyle1}" >
+                <ListView.View>
+                    <GridView  >
+                        <GridView.Columns >
+                            <GridViewColumn   Width="100"   DisplayMemberBinding="{Binding Path=ID, Mode=TwoWay}" >
+                                <GridViewColumnHeader Click="SortClick" x:Name="ID" Tag="ID"   Content="编码" />
+                            </GridViewColumn>
+                            <!--<GridViewColumn   Header="图片" Width="100"    >
                                 <GridViewColumn.CellTemplate>
                                     <HierarchicalDataTemplate>
                                         <Image  Source="{Binding Path=ImgPath}" >
@@ -72,45 +72,48 @@
                                     </HierarchicalDataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>-->
-                                <GridViewColumn   Width="150"   DisplayMemberBinding="{Binding Path=Title, Mode=TwoWay}" >
-                                    <GridViewColumnHeader Click="SortClick" x:Name="Title" Tag="Title"   Content="标题" />
-                                </GridViewColumn>
-                                <GridViewColumn   Width="100"   DisplayMemberBinding="{Binding Path=Status, Mode=TwoWay}" >
-                                    <GridViewColumnHeader Click="SortClick" x:Name="Status" Tag="Status"   Content="状态" />
-                                </GridViewColumn>
-                                <GridViewColumn   Width="100"   DisplayMemberBinding="{Binding Path=Author, Mode=TwoWay}" >
-                                    <GridViewColumnHeader Click="SortClick" x:Name="Author" Tag="Author"   Content="作者" />
-                                </GridViewColumn>
-                                <GridViewColumn   Width="100"   DisplayMemberBinding="{Binding Path=Operator, Mode=TwoWay}" >
-                                    <GridViewColumnHeader Click="SortClick" x:Name="Operator" Tag="Operator"   Content="指派给" />
-                                </GridViewColumn>
-                                <GridViewColumn   Width="100"   DisplayMemberBinding="{Binding Path=Priority, Mode=TwoWay}" >
-                                    <GridViewColumnHeader Click="SortClick" x:Name="Priority" Tag="Priority"   Content="优先级" />
-                                </GridViewColumn>
-                                <GridViewColumn   Width="100"   DisplayMemberBinding="{Binding Path=CreateTS, Mode=TwoWay}" >
-                                    <GridViewColumnHeader Click="SortClick" x:Name="CreateTS" Tag="CreateTS"   Content="发布时间" />
-                                </GridViewColumn>
+                            <GridViewColumn   Width="150"   DisplayMemberBinding="{Binding Path=Title, Mode=TwoWay}" >
+                                <GridViewColumnHeader Click="SortClick" x:Name="Title" Tag="Title"   Content="标题" />
+                            </GridViewColumn>
+                            <GridViewColumn   Width="100"   DisplayMemberBinding="{Binding Path=Status, Mode=TwoWay}" >
+                                <GridViewColumnHeader Click="SortClick" x:Name="Status" Tag="Status"   Content="状态" />
+                            </GridViewColumn>
+                            <GridViewColumn   Width="100"   DisplayMemberBinding="{Binding Path=Author, Mode=TwoWay}" >
+                                <GridViewColumnHeader Click="SortClick" x:Name="Author" Tag="Author"   Content="作者" />
+                            </GridViewColumn>
+                            <GridViewColumn   Width="100"   DisplayMemberBinding="{Binding Path=Operator, Mode=TwoWay}" >
+                                <GridViewColumnHeader Click="SortClick" x:Name="Operator" Tag="Operator"   Content="指派给" />
+                            </GridViewColumn>
+                            <GridViewColumn   Width="100"   DisplayMemberBinding="{Binding Path=Priority, Mode=TwoWay}" >
+                                <GridViewColumnHeader Click="SortClick" x:Name="Priority" Tag="Priority"   Content="优先级" />
+                            </GridViewColumn>
+                            <GridViewColumn   Width="100"   DisplayMemberBinding="{Binding Path=CreateTS, Mode=TwoWay}" >
+                                <GridViewColumnHeader Click="SortClick" x:Name="CreateTS" Tag="CreateTS"   Content="发布时间" />
+                            </GridViewColumn>
 
-                                <GridViewColumn   Width="100"   DisplayMemberBinding="{Binding Path=LastUpdatedTime, Mode=TwoWay}" >
-                                    <GridViewColumnHeader Click="SortClick" x:Name="LastUpdatedTime" Tag="LastUpdatedTime"   Content="最后更新时间" />
-                                </GridViewColumn>
+                            <GridViewColumn   Width="100"   DisplayMemberBinding="{Binding Path=LastUpdatedTime, Mode=TwoWay}" >
+                                <GridViewColumnHeader Click="SortClick" x:Name="LastUpdatedTime" Tag="LastUpdatedTime"   Content="最后更新时间" />
+                            </GridViewColumn>
 
-                                <GridViewColumn   Width="100"   DisplayMemberBinding="{Binding Path=StartTime, Mode=TwoWay}" >
-                                    <GridViewColumnHeader Click="SortClick" x:Name="StartTime" Tag="StartTime"   Content="计划开始时间" />
-                                </GridViewColumn>
-                            </GridView.Columns>
-                        </GridView>
-                    </ListView.View>
-                    <ListView.Background>
-                        <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
-                            <GradientStop Color="#FFD7A6A6" Offset="0" />
-                            <GradientStop Color="#FFD7D1D1" Offset="1" />
-                            <GradientStop Color="#FF898989" Offset="0.541" />
-                        </LinearGradientBrush>
-                    </ListView.Background>
-                </ListView>
-           
+                            <GridViewColumn   Width="100"   DisplayMemberBinding="{Binding Path=StartTime, Mode=TwoWay}" >
+                                <GridViewColumnHeader Click="SortClick" x:Name="StartTime" Tag="StartTime"   Content="计划开始时间" />
+                            </GridViewColumn>
+                        </GridView.Columns>
+                    </GridView>
+                </ListView.View>
+                <ListView.Background>
+                    <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                        <GradientStop Color="#FFD7A6A6" Offset="0" />
+                        <GradientStop Color="#FFD7D1D1" Offset="1" />
+                        <GradientStop Color="#FF898989" Offset="0.541" />
+                    </LinearGradientBrush>
+                </ListView.Background>
+            </ListView>
+
         </Grid>
+        <DataGrid x:Name="dg_data">
+
+        </DataGrid>
     </Grid>
 
 </UserControl>

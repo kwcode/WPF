@@ -15,6 +15,8 @@ namespace Trip
     {
         protected override void OnStartup(StartupEventArgs e)
         {
+            //TripMain win = new TripMain();
+            //win.Show();
             base.OnStartup(e);
             Global.SysContext = System.Threading.SynchronizationContext.Current;
             BaseApiCommon.ServiceProxy.URL = UserConfig.Config.GetValue("ServiceUrl");// "http://localhost:2015/HLService.aspx?Type=0";
